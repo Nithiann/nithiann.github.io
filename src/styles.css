@@ -109,3 +109,11 @@ a.link-gradient:hover {
 @layer utilities {}
 
 
+/* Display heading style for hero */
+.display-heading {
+	font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+	font-weight: 800;
+	letter-spacing: -0.04em;
+	line-height: 1.05;
+}
+

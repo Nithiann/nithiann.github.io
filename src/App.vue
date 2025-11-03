@@ -231,7 +231,7 @@ function hexToRgba(hex: string, alpha: number): string {
       <!-- Hero -->
       <section class="min-h-[calc(100svh-3.5rem)] flex scroll-mt-14">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center w-full">
-          <h1 class="text-4xl sm:text-5xl font-bold tracking-tight">Hi, I'm <span class="text-gradient-anim">Bas</span></h1>
+          <h1 class="display-heading text-5xl sm:text-6xl tracking-tight">Hi, I'm <span class="text-gradient-anim">Bas</span></h1>
           <p class="mt-4 text-lg text-[var(--muted)] max-w-2xl">
             I build clean, performant web experiences. Explore my work, the tech I enjoy,
             and ways to get in touch below.
