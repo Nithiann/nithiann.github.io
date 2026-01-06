@@ -413,9 +413,9 @@ const wallpaperUrl = "url('/wallpaper.png')"
               </h2>
               <div class="grid grid-cols-2 gap-4 mb-6">
                 <div v-for="skill in [
-                  { name: 'C# .NET', icon: 'c-sharp-logotype', level: '80%' },
+                  { name: 'C# .NET', icon: 'c-sharp-logo', level: '80%' },
                   { name: 'C# Game Dev', icon: 'unity', level: '45%' },
-                  { name: 'Rust', icon: 'rust', level: '25%' },
+                  { name: 'Rust', icon: 'rust-programming-language', level: '25%' },
                   { name: 'GO', icon: 'golang', level: '20%' }
                 ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
                   <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
