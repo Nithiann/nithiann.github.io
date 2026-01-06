@@ -1,48 +1,62 @@
-# portfolio
+# Interactive Portfolio OS
 
-This template should help get you started developing with Vue 3 in Vite.
+A unique, web-based portfolio that mimics multiple operating system environments. Choose your "boot" experience and explore projects and skills within a familiar desktop interface.
 
-## Recommended IDE Setup
+## 🚀 Experience the OS
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+This portfolio features a full "boot" sequence starting from a GRUB-inspired menu, leading into your choice of three distinct desktop environments.
 
-## Recommended Browser Setup
+### 🖥️ OS Options
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- **Windows 7**: A nostalgic trip with the classic orb, aero-style elements, and the iconic boot animation.
+- **macOS**: Sleek design with a functional dock and minimal aesthetics.
+- **Linux (GNOME)**: A modern desktop experience inspired by the GNOME desktop environment.
 
-## Type Support for `.vue` Imports in TS
+## 📸 Screenshots
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+|                GRUB Bootloader                 |                 Windows 7 Desktop                 |
+| :--------------------------------------------: | :-----------------------------------------------: |
+| ![GRUB Menu](public/screenshots/grub_menu.png) | ![Windows 7](public/screenshots/win7_desktop.png) |
 
-## Customize configuration
+|                 macOS Desktop                  |             Linux (GNOME) Desktop              |
+| :--------------------------------------------: | :--------------------------------------------: |
+| ![macOS](public/screenshots/macos_desktop.png) | ![Linux](public/screenshots/linux_desktop.png) |
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 🛠️ Tech Stack
 
-## Project Setup
+- **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (Version 20.19.0 or higher)
+
+### Setup
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## 📂 Project Structure
 
-```sh
-npm run lint
-```
+- `src/components/win7`: Windows 7 specific components and styling.
+- `src/components/macos`: macOS specific components.
+- `src/components/linux`: Linux/GNOME specific components.
+- `src/components/shared`: UI elements shared across all environments.
+- `src/composables`: Logic for window management and OS state.
