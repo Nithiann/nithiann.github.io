@@ -1,312 +1,239 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref, reactive } from 'vue';
+import DesktopIcon from './components/DesktopIcon.vue';
+import Window from './components/Window.vue';
+import Taskbar from './components/Taskbar.vue';
 
-const theme = ref<'dark' | 'light'>('dark')
-const isAnimating = ref(false)
-let touchStartY = 0
-let wheelTimeout: number | undefined
-const themeBtn = ref<HTMLButtonElement | null>(null)
-
-const themeVarsLight: Record<string, string> = {
-	'--bg': '#ffffff',
-	'--text': '#111827',
-	'--muted': '#6b7280',
-	'--surface': '#ffffff',
-	'--surface-hover': '#f3f4f6',
-	'--border': '#e5e7eb',
-}
-const themeVarsDark: Record<string, string> = {
-	'--bg': '#000000',
-	'--text': '#f3f4f6',
-	'--muted': '#d1d5db',
-	'--surface': '#000000',
-	'--surface-hover': '#0a0a0a',
-	'--border': '#262626',
+// Window state management
+interface AppWindow {
+  id: string;
+  title: string;
+  isOpen: boolean;
+  zIndex: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  icon: string;
 }
 
-function getSections(): HTMLElement[] {
-	return Array.from(document.querySelectorAll('main section')) as HTMLElement[]
-}
+const windows = reactive<Record<string, AppWindow>>({
+  profile: {
+    id: 'profile',
+    title: 'My Profile',
+    isOpen: false,
+    zIndex: 10,
+    x: 100,
+    y: 50,
+    width: 600,
+    height: 400,
+    icon: '👤'
+  },
+  projects: {
+    id: 'projects',
+    title: 'Projects',
+    isOpen: false,
+    zIndex: 10,
+    x: 150,
+    y: 100,
+    width: 700,
+    height: 500,
+    icon: '📁'
+  },
+  experience: {
+    id: 'experience',
+    title: 'Work Experience',
+    isOpen: false,
+    zIndex: 10,
+    x: 200,
+    y: 150,
+    width: 500,
+    height: 600,
+    icon: '💼'
+  },
+  skills: {
+    id: 'skills',
+    title: 'Programming Skills',
+    isOpen: false,
+    zIndex: 10,
+    x: 250,
+    y: 200,
+    width: 600,
+    height: 450,
+    icon: '💻'
+  }
+});
 
-function getCurrentSectionIndex(sections: HTMLElement[]): number {
-	const scrollY = window.scrollY
-	let closestIdx = 0
-	let closestDist = Infinity
-	for (let i = 0; i < sections.length; i++) {
-		const el = sections[i]!
-		const top = el.offsetTop
-		const dist = Math.abs(top - scrollY)
-		if (dist < closestDist) {
-			closestDist = dist
-			closestIdx = i
-		}
-	}
-	return closestIdx
-}
+const topZIndex = ref(100);
 
-function scrollToSection(targetIdx: number) {
-	const sections = getSections()
-	if (targetIdx < 0 || targetIdx >= sections.length) return
-	isAnimating.value = true
-	const el = sections[targetIdx]!
-	el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-	window.clearTimeout(wheelTimeout)
-	wheelTimeout = window.setTimeout(() => {
-		isAnimating.value = false
-	}, 700)
-}
+const openWindow = (id: string) => {
+  windows[id].isOpen = true;
+  focusWindow(id);
+};
 
-function applyTheme(next: 'dark' | 'light') {
-	const root = document.documentElement
-	if (next === 'dark') {
-		root.classList.add('dark')
-		root.setAttribute('data-theme', 'dark')
-	} else {
-		root.classList.remove('dark')
-		root.removeAttribute('data-theme')
-	}
-	localStorage.setItem('theme', next)
-	theme.value = next
-}
+const closeWindow = (id: string) => {
+  windows[id].isOpen = false;
+};
 
-function toggleTheme() {
-	const next: 'dark' | 'light' = theme.value === 'dark' ? 'light' : 'dark'
-	const btn = themeBtn.value
-	const rect = btn?.getBoundingClientRect()
-	const cx = rect ? rect.left + rect.width / 2 : window.innerWidth - 24
-	const cy = rect ? rect.top + rect.height / 2 : 24
-	runThemeReveal(next, cx, cy)
-}
+const focusWindow = (id: string) => {
+  topZIndex.value += 1;
+  windows[id].zIndex = topZIndex.value;
+};
 
-onMounted(() => {
-	const saved = (localStorage.getItem('theme') as 'dark' | 'light' | null)
-	const initial: 'dark' | 'light' = saved ?? 'dark'
-	applyTheme(initial)
+// Start Menu state
+const isStartMenuOpen = ref(false);
+const toggleStartMenu = () => {
+  isStartMenuOpen.value = !isStartMenuOpen.value;
+};
 
-	const onWheel = (e: WheelEvent) => {
-		if (isAnimating.value) { e.preventDefault(); return }
-		const sections = getSections()
-		if (sections.length === 0) return
-		const current = getCurrentSectionIndex(sections)
-		if (Math.abs(e.deltaY) < 16) return
-		e.preventDefault()
-		const next = e.deltaY > 0 ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0)
-		if (next !== current) scrollToSection(next)
-	}
+const moveWindow = (id: string, delta: { dx: number, dy: number }) => {
+  windows[id].x += delta.dx;
+  windows[id].y += delta.dy;
+};
 
-	const onKey = (e: KeyboardEvent) => {
-		if (isAnimating.value) { e.preventDefault(); return }
-		const keysDown = ['ArrowDown','PageDown',' '] as const
-		const keysUp = ['ArrowUp','PageUp'] as const
-		if ([...keysDown, ...keysUp].includes(e.key as any)) {
-			e.preventDefault()
-			const sections = getSections()
-			const current = getCurrentSectionIndex(sections)
-			const next = (keysDown as readonly string[]).includes(e.key)
-				? Math.min(current + 1, sections.length - 1)
-				: Math.max(current - 1, 0)
-			if (next !== current) scrollToSection(next)
-		}
-	}
-
-	const onTouchStart = (e: TouchEvent) => {
-		touchStartY = e.touches[0]?.clientY ?? 0
-	}
-	const onTouchEnd = (e: TouchEvent) => {
-		if (isAnimating.value) return
-		const endY = e.changedTouches[0]?.clientY ?? touchStartY
-		const delta = touchStartY - endY
-		if (Math.abs(delta) < 24) return
-		const sections = getSections()
-		const current = getCurrentSectionIndex(sections)
-		const next = delta > 0 ? Math.min(current + 1, sections.length - 1) : Math.max(current - 1, 0)
-		if (next !== current) scrollToSection(next)
-	}
-
-	window.addEventListener('wheel', onWheel, { passive: false })
-	window.addEventListener('keydown', onKey, { passive: false })
-	window.addEventListener('touchstart', onTouchStart, { passive: true })
-	window.addEventListener('touchend', onTouchEnd, { passive: true })
-
-	onUnmounted(() => {
-		window.removeEventListener('wheel', onWheel as any)
-		window.removeEventListener('keydown', onKey as any)
-		window.removeEventListener('touchstart', onTouchStart as any)
-		window.removeEventListener('touchend', onTouchEnd as any)
-	})
-})
-
-function runThemeReveal(next: 'dark' | 'light', cx: number, cy: number) {
-    // Reduced motion: switch immediately
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) {
-        applyTheme(next)
-        return
-    }
-
-    // Capture old theme vars before flipping
-    const oldVars = theme.value === 'dark' ? themeVarsDark : themeVarsLight
-    const nextVars = next === 'dark' ? themeVarsDark : themeVarsLight
-
-    // Flip theme so underlying UI updates and remains visible
-    applyTheme(next)
-
-    // Add radial wipe overlay showing a tinted version of the OLD theme,
-    // with a transparent hole that expands from the button to reveal the NEW theme.
-    const overlay = document.createElement('div')
-    overlay.style.position = 'fixed'
-    overlay.style.inset = '0'
-    overlay.style.zIndex = '9999'
-    overlay.style.pointerEvents = 'none'
-    // Old theme tinted background to keep content visible but simulate old look
-    const oldBg = oldVars['--bg'] ?? '#000000'
-    const rgba = hexToRgba(oldBg, 0.92)
-    overlay.style.background = rgba
-    // Create a mask hole that will expand (transparent center reveals new theme)
-    overlay.style.setProperty('--r', '0px')
-    const mask = `radial-gradient(circle var(--r) at ${cx}px ${cy}px, transparent 0, transparent var(--r), black calc(var(--r) + 1px))`
-    ;(overlay.style as any).maskImage = mask
-    ;(overlay.style as any).webkitMaskImage = mask
-    document.body.appendChild(overlay)
-
-    // Compute max radius to cover viewport from click center
-    const maxX = Math.max(cx, window.innerWidth - cx)
-    const maxY = Math.max(cy, window.innerHeight - cy)
-    const radius = Math.hypot(maxX, maxY)
-
-    // Animate mask radius with rAF for broad support
-    const duration = 800
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-    const start = performance.now()
-    const tick = (now: number) => {
-        const t = Math.min(1, (now - start) / duration)
-        const eased = ease(t)
-        overlay.style.setProperty('--r', `${radius * eased}px`)
-        if (t < 1) requestAnimationFrame(tick)
-        else overlay.remove()
-    }
-    requestAnimationFrame(tick)
-}
-
-function hexToRgba(hex: string, alpha: number): string {
-    const h = hex.replace('#','')
-    const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16)
-    const r = (bigint >> 16) & 255
-    const g = (bigint >> 8) & 255
-    const b = bigint & 255
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
+const wallpaperUrl = "url('/home/voss/.gemini/antigravity/brain/187ec2d8-b507-461a-a8d0-d70c85153c22/windows_7_wallpaper_1767697790346.png')";
 </script>
 
 <template>
-  <div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-    <!-- Navbar -->
-    <header class="fixed inset-x-0 top-0 z-50 bg-[var(--bg)] backdrop-blur border-b border-[var(--border)]">
-      <nav class="px-4 sm:px-6 lg:px-8 h-14 grid grid-cols-3 items-center">
-        <!-- Left: Name -->
-        <a href="#home" class="font-semibold tracking-tight link-gradient">Bas</a>
+  <div class="h-screen w-screen relative overflow-hidden bg-cover bg-center" :style="{ backgroundImage: wallpaperUrl }">
 
-        <!-- Middle: Menu -->
-        <ul class="flex items-center justify-center gap-4 text-sm">
-          <li><a href="#home" class="link-gradient">About</a></li>
-          <li><a href="#projects" class="link-gradient">Projects</a></li>
-          <li><a href="#tech" class="link-gradient">Tech</a></li>
-          <li><a href="#contact" class="link-gradient">Contact</a></li>
-        </ul>
+    <!-- Desktop Icons -->
+    <div class="p-4 grid grid-flow-col grid-rows-10 w-fit gap-2">
+      <DesktopIcon
+        label="My Profile"
+        icon="https://img.icons8.com/color/96/my-computer.png"
+        @open="openWindow('profile')"
+      />
+      <DesktopIcon
+        label="Projects"
+        icon="https://img.icons8.com/color/96/folder-invoices.png"
+        @open="openWindow('projects')"
+      />
+      <DesktopIcon
+        label="Work Experience"
+        icon="https://img.icons8.com/color/96/briefcase.png"
+        @open="openWindow('skills')"
+      />
+      <DesktopIcon
+        label="Programming Skills"
+        icon="https://img.icons8.com/color/96/code.png"
+        @open="openWindow('experience')"
+      />
+    </div>
 
-        <!-- Right: Resume + Theme -->
-        <div class="flex items-center justify-end gap-2">
-          <a href="/resume.pdf" download class="inline-flex items-center rounded-md px-3 py-1.5 text-sm btn-accent">
-            Download Résumé
-          </a>
-          <button ref="themeBtn" type="button" @click="toggleTheme" class="inline-flex items-center rounded-md border border-[var(--border)] px-2.5 py-1.5 text-sm hover:bg-[var(--surface-hover)]">
-            <span v-if="theme === 'dark'">☾</span>
-            <span v-else>☀</span>
-          </button>
+    <!-- Windows -->
+    <template v-for="win in windows" :key="win.id">
+      <Window
+        v-if="win.isOpen"
+        :title="win.title"
+        :isActive="win.zIndex === topZIndex"
+        :style="{
+          left: win.x + 'px',
+          top: win.y + 'px',
+          width: win.width + 'px',
+          height: win.height + 'px',
+          zIndex: win.zIndex
+        }"
+        @close="closeWindow(win.id)"
+        @focus="focusWindow(win.id)"
+        @move="(delta: { dx: number, dy: number }) => moveWindow(win.id, delta)"
+      >
+        <template #icon>
+            <span class="text-lg">{{ win.icon }}</span>
+        </template>
+
+        <!-- Window Content based on ID -->
+        <div v-if="win.id === 'profile'" class="prose max-w-none">
+          <h1>About Me</h1>
+          <p>Hi, I'm Bas. I build clean, performant web experiences.</p>
+          <p>I'm a developer focused on modern frontend stacks and thoughtful UX.</p>
         </div>
-      </nav>
-    </header>
 
-    <main id="home" class="pt-14">
-      <!-- Hero -->
-      <section class="min-h-[calc(100svh-3.5rem)] flex scroll-mt-14">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center w-full">
-          <h1 class="display-heading text-5xl sm:text-6xl tracking-tight">Hi, I'm <span class="text-gradient-anim">Bas</span></h1>
-          <p class="mt-4 text-lg text-[var(--muted)] max-w-2xl">
-            I build clean, performant web experiences. Explore my work, the tech I enjoy,
-            and ways to get in touch below.
-          </p>
-          <p class="mt-4 text-[var(--muted)] max-w-3xl">
-            I'm a developer focused on modern frontend stacks and thoughtful UX. I enjoy
-            turning ideas into products with maintainable code, strong design systems, and
-            a focus on performance.
-          </p>
-          <div class="mt-8 flex gap-3">
-            <a href="#projects" class="inline-flex items-center rounded-md px-4 py-2 btn-accent">View Projects</a>
-            <a href="#contact" class="inline-flex items-center rounded-md border px-4 py-2 btn-outline-accent">Contact Me</a>
+        <div v-else-if="win.id === 'projects'" class="grid grid-cols-2 gap-4">
+          <div class="border p-3 rounded hover:bg-gray-100 cursor-pointer">
+            <h3 class="font-bold">Project One</h3>
+            <p class="text-sm">A cool project I built with Vue and Vite.</p>
+          </div>
+          <div class="border p-3 rounded hover:bg-gray-100 cursor-pointer">
+             <h3 class="font-bold">Project Two</h3>
+             <p class="text-sm">Another awesome project showcasing my skills.</p>
           </div>
         </div>
-      </section>
 
-      <!-- Projects -->
-      <section id="projects" class="scroll-mt-16 border-t border-[var(--border)] scroll-mt-14">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 min-h-[calc(100svh-3.5rem)] py-16 w-full">
-          <h2 class="text-2xl font-semibold tracking-tight">Projects</h2>
-          <div class="mt-6 grid gap-6 sm:grid-cols-2">
-            <article class="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
-              <h3 class="font-semibold">Project One</h3>
-              <p class="mt-2 text-sm text-[var(--muted)]">Brief description of what this project does and why it matters.</p>
-              <div class="mt-4 flex gap-3">
-                <a href="#" class="text-purple-600 hover:underline text-sm">Live</a>
-                <a href="#" class="text-purple-600 hover:underline text-sm">Code</a>
-              </div>
-            </article>
-            <article class="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
-              <h3 class="font-semibold">Project Two</h3>
-              <p class="mt-2 text-sm text-[var(--muted)]">Another project overview highlighting stack and key features.</p>
-              <div class="mt-4 flex gap-3">
-                <a href="#" class="text-purple-600 hover:underline text-sm">Live</a>
-                <a href="#" class="text-purple-600 hover:underline text-sm">Code</a>
-              </div>
-            </article>
-          </div>
+        <div v-else-if="win.id === 'experience'" class="space-y-4">
+            <div class="border-l-4 border-blue-500 pl-4">
+                <h3 class="font-bold">Senior Developer @ Tech Corp</h3>
+                <p class="text-sm text-gray-600">2022 - Present</p>
+                <p>Leading frontend development initiatives.</p>
+            </div>
+             <div class="border-l-4 border-gray-300 pl-4">
+                <h3 class="font-bold">Web Developer @ Design Studio</h3>
+                <p class="text-sm text-gray-600">2020 - 2022</p>
+                <p>Creating interactive user interfaces.</p>
+            </div>
         </div>
-      </section>
 
-      <section id="tech" class="scroll-mt-16 border-t border-[var(--border)] bg-[var(--surface)] scroll-mt-14">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 min-h-[calc(100svh-3.5rem)] py-16 w-full">
-          <h2 class="text-2xl font-semibold tracking-tight">Tech</h2>
-          <ul class="mt-4 flex flex-wrap gap-2 text-sm text-[var(--text)]">
-            <li class="rounded-full border border-[var(--border)] px-3 py-1 bg-[var(--surface-hover)]">Vue</li>
-            <li class="rounded-full border border-[var(--border)] px-3 py-1 bg-[var(--surface-hover)]">TypeScript</li>
-            <li class="rounded-full border border-[var(--border)] px-3 py-1 bg-[var(--surface-hover)]">Vite</li>
-            <li class="rounded-full border border-[var(--border)] px-3 py-1 bg-[var(--surface-hover)]">Tailwind CSS</li>
-          </ul>
+        <div v-else-if="win.id === 'skills'" class="flex flex-wrap gap-2">
+            <span class="win7-button">JavaScript</span>
+            <span class="win7-button">TypeScript</span>
+            <span class="win7-button">Vue.js</span>
+            <span class="win7-button">React</span>
+            <span class="win7-button">Node.js</span>
+            <span class="win7-button">Tailwind CSS</span>
+            <span class="win7-button">Vite</span>
         </div>
-      </section>
+      </Window>
+    </template>
 
-      <!-- Contact -->
-      <section id="contact" class="scroll-mt-16 border-t border-[var(--border)] scroll-mt-14">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 min-h-[calc(100svh-3.5rem)] py-16 w-full">
-          <h2 class="text-2xl font-semibold tracking-tight">Contact</h2>
-          <p class="mt-4 text-[var(--muted)]">Want to collaborate or have a question? Reach out:</p>
-          <form class="mt-6 grid gap-4 max-w-lg">
-            <input type="text" placeholder="Your name" class="w-full rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" />
-            <input type="email" placeholder="Your email" class="w-full rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" />
-            <textarea placeholder="Message" rows="4" class="w-full rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" />
-            <button type="button" class="inline-flex items-center rounded-md px-4 py-2 w-max btn-accent">Send</button>
-          </form>
+    <!-- Taskbar -->
+    <Taskbar @openStartMenu="toggleStartMenu">
+        <template #apps>
+            <div
+                v-for="win in Object.values(windows).filter(w => w.isOpen)"
+                :key="win.id"
+                class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px]"
+                :class="{ 'bg-white/30 border-white/40': win.zIndex === topZIndex }"
+                @click="focusWindow(win.id)"
+            >
+                <span class="mr-2">{{ win.icon }}</span>
+                <span class="text-white text-xs truncate">{{ win.title }}</span>
+            </div>
+        </template>
+    </Taskbar>
+
+    <!-- Start Menu (Aero Overlay) -->
+    <div v-if="isStartMenuOpen" class="fixed bottom-10 left-0 w-80 h-96 aero-glass rounded-tr-lg border-t border-r border-white/30 z-[10000] p-4">
+        <div class="flex items-center gap-3 mb-4 p-2 border-b border-white/10">
+            <div class="w-10 h-10 rounded bg-blue-500 flex items-center justify-center text-white text-xl">👤</div>
+            <span class="text-white font-bold">Bas</span>
         </div>
-      </section>
-    </main>
+        <div class="space-y-1">
+            <div class="text-white text-sm p-2 hover:bg-white/10 rounded cursor-pointer">Internet Explorer</div>
+            <div class="text-white text-sm p-2 hover:bg-white/10 rounded cursor-pointer">Notepad</div>
+            <div class="text-white text-sm p-2 hover:bg-white/10 rounded cursor-pointer">Calculator</div>
+            <div class="text-white text-sm p-2 hover:bg-white/10 rounded cursor-pointer">Paint</div>
+        </div>
+        <div class="absolute bottom-4 right-4 flex gap-2">
+             <button class="win7-button" @click="isStartMenuOpen = false">Shut down</button>
+        </div>
+    </div>
 
-    <footer class="border-t border-[var(--border)] bg-[var(--surface)]">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-gray-500 dark:text-gray-400">
-        © {{ new Date().getFullYear() }} Bas. All rights reserved.
-      </div>
-    </footer>
   </div>
-  
 </template>
 
-<style scoped></style>
+<style>
+/* Global resets for the desktop environment */
+html, body, #app {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.prose h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+</style>
