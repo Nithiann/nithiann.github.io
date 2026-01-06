@@ -333,10 +333,10 @@ const wallpaperUrl = "url('/wallpaper.png')"
               </div>
               <div class="relative pl-6 border-l-2 border-gray-300">
                 <div
-                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
+                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"
                 ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-blue-700">
+                  <h3 class="font-bold text-gray-700">
                     Full-stack developer intern @ Direct-Effect
                   </h3>
                   <p class="text-xs text-gray-500 mb-2">September 2024 - January 2025 | Drunen</p>
@@ -349,10 +349,10 @@ const wallpaperUrl = "url('/wallpaper.png')"
               </div>
               <div class="relative pl-6 border-l-2 border-gray-300">
                 <div
-                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
+                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"
                 ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-blue-700">
+                  <h3 class="font-bold text-gray-700">
                     Powerservice employee / System administrator @ Mediamarkt
                   </h3>
                   <p class="text-xs text-gray-500 mb-2">August 2020 - January 2025 | Breda</p>
