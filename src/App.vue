@@ -202,10 +202,10 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   Personal Information
                 </h2>
                 <div class="grid grid-cols-2 gap-4 text-sm">
-                  <div><strong>Name:</strong> Bas</div>
-                  <div><strong>Location:</strong> The Internet</div>
-                  <div><strong>Role:</strong> Senior Web Developer</div>
-                  <div><strong>Contact:</strong> bas@example.com</div>
+                  <div><strong>Name:</strong> Bas Voss</div>
+                  <div><strong>Location:</strong> Breda, The Netherlands</div>
+                  <div><strong>Role:</strong> Web / App Developer</div>
+                  <div><strong>Contact:</strong> voss.bas@gmail.com</div>
                 </div>
               </section>
 
@@ -214,9 +214,11 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   Summary
                 </h2>
                 <p class="text-sm leading-relaxed">
-                  Experienced developer focused on building clean, performant web experiences.
-                  Specialized in modern frontend stacks and thoughtful UX. Turning ideas into products
-                  with maintainable code.
+                  I am a passionate developer with a strong background in software engineering.
+                  Interested in many different technologies and always eager to learn new things.
+                  I am a team player and enjoy working in a team. I have a strong work ethic and
+                  am always willing to put in the extra effort to get the job done. Security is
+                  a top priority for me and I always try to implement the best security practices.
                 </p>
               </section>
 
@@ -225,8 +227,12 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   Education
                 </h2>
                 <div class="text-sm">
-                  <p class="font-bold">Masters in Software Engineering</p>
-                  <p class="text-gray-600 italic">2018 - 2020</p>
+                  <p class="font-bold">Secondary Education in Application Development</p>
+                  <p class="text-gray-600 italic">2019 - 2019</p>
+                </div>
+                <div class="text-sm">
+                  <p class="font-bold">Bachelor in Software Engineering</p>
+                  <p class="text-gray-600 italic">2019 - 2026</p>
                 </div>
               </section>
             </div>
