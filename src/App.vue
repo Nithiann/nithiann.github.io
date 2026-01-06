@@ -204,7 +204,9 @@ const wallpaperUrl = "url('/wallpaper.png')"
         @maximize="maximizeWindow(win.id)"
         @focus="focusWindow(win.id)"
         @move="(delta: { dx: number; dy: number }) => moveWindow(win.id, delta)"
-        @resize="(delta: { dx: number; dy: number; dw: number; dh: number }) => resizeWindow(win.id, delta)"
+        @resize="
+          (delta: { dx: number; dy: number; dw: number; dh: number }) => resizeWindow(win.id, delta)
+        "
       >
         <template #icon>
           <span class="text-lg">{{ win.icon }}</span>
@@ -236,10 +238,10 @@ const wallpaperUrl = "url('/wallpaper.png')"
                 </h2>
                 <p class="text-sm leading-relaxed">
                   I am a passionate developer with a strong background in software engineering.
-                  Interested in many different technologies and always eager to learn new things.
-                  I am a team player and enjoy working in a team. I have a strong work ethic and
-                  am always willing to put in the extra effort to get the job done. Security is
-                  a top priority for me and I always try to implement the best security practices.
+                  Interested in many different technologies and always eager to learn new things. I
+                  am a team player and enjoy working in a team. I have a strong work ethic and am
+                  always willing to put in the extra effort to get the job done. Security is a top
+                  priority for me and I always try to implement the best security practices.
                 </p>
               </section>
 
@@ -273,9 +275,7 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   alt="Portfolio"
                   class="w-16 h-16 mb-2"
                 />
-                <span class="text-sm font-semibold group-hover:text-blue-600"
-                  >Vue Portfolio</span
-                >
+                <span class="text-sm font-semibold group-hover:text-blue-600">Vue Portfolio</span>
                 <span class="text-xs text-gray-500 mt-1">Vue 3, Vite & Tailwind</span>
               </a>
               <a
@@ -287,9 +287,7 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   alt="VOSScloud"
                   class="w-16 h-16 mb-2"
                 />
-                <span class="text-sm font-semibold group-hover:text-blue-600"
-                  >VOSScloud</span
-                >
+                <span class="text-sm font-semibold group-hover:text-blue-600">VOSScloud</span>
                 <span class="text-xs text-gray-500 mt-1">Symfony PHP Cloud Drive</span>
               </a>
               <a
@@ -311,19 +309,57 @@ const wallpaperUrl = "url('/wallpaper.png')"
         </div>
 
         <div v-else-if="win.id === 'experience'" class="h-full">
-          <ExplorerShell title="Work Experience" path="C:\Users\Bas\Documents\Career" class="h-full">
+          <ExplorerShell
+            title="Work Experience"
+            path="C:\Users\Bas\Documents\Career"
+            class="h-full"
+          >
             <div class="space-y-8 p-6">
               <div class="relative pl-6 border-l-2 border-blue-500">
                 <div
                   class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
                 ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-blue-700">Senior Web Developer @ Tech Solutions</h3>
-                  <p class="text-xs text-gray-500 mb-2">2022 - PRESENT | Remote</p>
+                  <h3 class="font-bold text-blue-700">
+                    Junior Full-stack developer @ Direct-Effect
+                  </h3>
+                  <p class="text-xs text-gray-500 mb-2">January 2025 - September 2025 | Drunen</p>
                   <ul class="text-sm space-y-2 list-disc ml-4 text-gray-700">
-                    <li>Leading the migration of legacy apps to Vue 3 and TypeScript.</li>
-                    <li>Architecting design systems for consistent UI across 10+ projects.</li>
-                    <li>Mentoring junior developers and conducting code reviews.</li>
+                    <li>Developed a Progressive web-app front-end in AngularJS and Angular 8.</li>
+                    <li>Developed API back-end in PHP Laravel.</li>
+                    <li>Used MySQL as database engine.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative pl-6 border-l-2 border-gray-300">
+                <div
+                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
+                ></div>
+                <div class="bg-gray-50 p-4 rounded shadow-sm">
+                  <h3 class="font-bold text-blue-700">
+                    Full-stack developer intern @ Direct-Effect
+                  </h3>
+                  <p class="text-xs text-gray-500 mb-2">September 2024 - January 2025 | Drunen</p>
+                  <ul class="text-sm space-y-2 list-disc ml-4 text-gray-700">
+                    <li>Developed a Progressive web-app front-end in AngularJS and Angular 8.</li>
+                    <li>Developed API back-end in PHP Laravel.</li>
+                    <li>Used MySQL as database engine.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="relative pl-6 border-l-2 border-gray-300">
+                <div
+                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
+                ></div>
+                <div class="bg-gray-50 p-4 rounded shadow-sm">
+                  <h3 class="font-bold text-blue-700">
+                    Powerservice employee / System administrator @ Mediamarkt
+                  </h3>
+                  <p class="text-xs text-gray-500 mb-2">August 2020 - January 2025 | Breda</p>
+                  <ul class="text-sm space-y-2 list-disc ml-4 text-gray-700">
+                    <li>Helping customers with their technical issues.</li>
+                    <li>Making sure all software and drivers work within the company.</li>
+                    <li>Repairing smartphones, laptops and desktops.</li>
                   </ul>
                 </div>
               </div>
@@ -333,11 +369,12 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"
                 ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-gray-700">Frontend Developer @ Creative Agency</h3>
-                  <p class="text-xs text-gray-500 mb-2">2020 - 2022 | Amsterdam</p>
+                  <h3 class="font-bold text-gray-700">
+                    Developer Intern @ TriStar Industries Group
+                  </h3>
+                  <p class="text-xs text-gray-500 mb-2">January 2019 - June 2019 | Roosendaal</p>
                   <p class="text-sm text-gray-700">
-                    Implemented complex user interfaces with a focus on pixel-perfect designs and
-                    smooth animations.
+                    Developed In-house ERP tool in a custom PHP framework
                   </p>
                 </div>
               </div>
@@ -347,11 +384,10 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-300 border-2 border-white"
                 ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-gray-700">Junior Developer @ Startup Hub</h3>
-                  <p class="text-xs text-gray-500 mb-2">2018 - 2020 | Berlin</p>
+                  <h3 class="font-bold text-gray-700">Developer intern @ Coders academy</h3>
+                  <p class="text-xs text-gray-500 mb-2">August 2017 - January 2018 | Rotterdam</p>
                   <p class="text-sm text-gray-700">
-                    Developed initial MVPs using modern web technologies and responded to early user
-                    feedback.
+                    Developed Social media platform for companies in Laravel PHP
                   </p>
                 </div>
               </div>
@@ -363,20 +399,28 @@ const wallpaperUrl = "url('/wallpaper.png')"
           <ExplorerShell title="Programming Skills" path="C:\Windows\System32" class="h-full">
             <div class="p-6 overflow-y-auto h-full">
               <!-- Expertise -->
-              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+              <h2
+                class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter"
+              >
                 <img src="https://img.icons8.com/color/48/star.png" class="w-4 h-4" />
                 Expertise (High Experience)
               </h2>
               <div class="grid grid-cols-2 gap-4 mb-8">
-                <div v-for="skill in [
-                  { name: 'Angular', icon: 'angularjs', level: '95%' },
-                  { name: 'PHP', icon: 'php', level: '90%' },
-                  { name: 'Express.js', icon: 'express-js', level: '85%' }
-                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                <div
+                  v-for="skill in [
+                    { name: 'Angular', icon: 'angularjs', level: '95%' },
+                    { name: 'PHP', icon: 'php', level: '90%' },
+                    { name: 'Express.js', icon: 'express-js', level: '85%' },
+                  ]"
+                  :key="skill.name"
+                  class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm"
+                >
                   <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
                   <div class="flex-1">
                     <div class="font-bold text-xs">{{ skill.name }}</div>
-                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                    <div
+                      class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                    >
                       <div class="h-full bg-blue-500" :style="{ width: skill.level }"></div>
                     </div>
                   </div>
@@ -384,22 +428,30 @@ const wallpaperUrl = "url('/wallpaper.png')"
               </div>
 
               <!-- Working Knowledge -->
-              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+              <h2
+                class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter"
+              >
                 <img src="https://img.icons8.com/color/48/workflow.png" class="w-4 h-4" />
                 Working Knowledge
               </h2>
               <div class="grid grid-cols-2 gap-4 mb-8">
-                <div v-for="skill in [
-                  { name: 'Vue', icon: 'vue-js', level: '75%' },
-                  { name: 'React', icon: 'react-native', level: '70%' },
-                  { name: 'Flutter', icon: 'flutter', level: '65%' },
-                  { name: 'Kotlin', icon: 'kotlin', level: '60%' },
-                  { name: 'Java', icon: 'java-coffee-cup-logo', level: '60%' }
-                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                <div
+                  v-for="skill in [
+                    { name: 'Vue', icon: 'vue-js', level: '75%' },
+                    { name: 'React', icon: 'react-native', level: '70%' },
+                    { name: 'Flutter', icon: 'flutter', level: '65%' },
+                    { name: 'Kotlin', icon: 'kotlin', level: '60%' },
+                    { name: 'Java', icon: 'java-coffee-cup-logo', level: '60%' },
+                  ]"
+                  :key="skill.name"
+                  class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm"
+                >
                   <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
                   <div class="flex-1">
                     <div class="font-bold text-xs">{{ skill.name }}</div>
-                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                    <div
+                      class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                    >
                       <div class="h-full bg-green-500" :style="{ width: skill.level }"></div>
                     </div>
                   </div>
@@ -407,21 +459,29 @@ const wallpaperUrl = "url('/wallpaper.png')"
               </div>
 
               <!-- Learning / Academic / Legacy -->
-              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+              <h2
+                class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter"
+              >
                 <img src="https://img.icons8.com/color/48/light-bulb.png" class="w-4 h-4" />
                 Learning & Academic Experience
               </h2>
               <div class="grid grid-cols-2 gap-4 mb-6">
-                <div v-for="skill in [
-                  { name: 'C# .NET', icon: 'c-sharp-logo', level: '80%' },
-                  { name: 'C# Game Dev', icon: 'unity', level: '45%' },
-                  { name: 'Rust', icon: 'rust-programming-language', level: '25%' },
-                  { name: 'GO', icon: 'golang', level: '20%' }
-                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                <div
+                  v-for="skill in [
+                    { name: 'C# .NET', icon: 'c-sharp-logo', level: '80%' },
+                    { name: 'C# Game Dev', icon: 'unity', level: '45%' },
+                    { name: 'Rust', icon: 'rust-programming-language', level: '25%' },
+                    { name: 'GO', icon: 'golang', level: '20%' },
+                  ]"
+                  :key="skill.name"
+                  class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm"
+                >
                   <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
                   <div class="flex-1">
                     <div class="font-bold text-xs">{{ skill.name }}</div>
-                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                    <div
+                      class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                    >
                       <div class="h-full bg-orange-500" :style="{ width: skill.level }"></div>
                     </div>
                   </div>
@@ -441,8 +501,9 @@ const wallpaperUrl = "url('/wallpaper.png')"
           :key="win.id"
           class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all"
           :class="{
-            'bg-white/30 border-white/40 shadow-inner': win.zIndex === topZIndex && !win.isMinimized,
-            'opacity-60': win.isMinimized
+            'bg-white/30 border-white/40 shadow-inner':
+              win.zIndex === topZIndex && !win.isMinimized,
+            'opacity-60': win.isMinimized,
           }"
           @click="toggleWindow(win.id)"
         >
@@ -456,7 +517,12 @@ const wallpaperUrl = "url('/wallpaper.png')"
     <StartMenu
       :isOpen="isStartMenuOpen"
       @close="isStartMenuOpen = false"
-      @openFolder="(id) => { openWindow(id); isStartMenuOpen = false; }"
+      @openFolder="
+        (id) => {
+          openWindow(id)
+          isStartMenuOpen = false
+        }
+      "
     />
   </div>
 </template>
