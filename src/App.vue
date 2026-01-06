@@ -133,6 +133,26 @@ const moveWindow = (id: string, delta: { dx: number; dy: number }) => {
   }
 }
 
+const resizeWindow = (id: string, delta: { dx: number; dy: number; dw: number; dh: number }) => {
+  const win = windows[id]
+  if (!win) return
+
+  const minWidth = 200
+  const minHeight = 150
+
+  const newWidth = win.width + delta.dw
+  const newHeight = win.height + delta.dh
+
+  if (newWidth >= minWidth) {
+    win.width = newWidth
+    win.x += delta.dx
+  }
+  if (newHeight >= minHeight) {
+    win.height = newHeight
+    win.y += delta.dy
+  }
+}
+
 const wallpaperUrl = "url('/wallpaper.png')"
 </script>
 
@@ -184,6 +204,7 @@ const wallpaperUrl = "url('/wallpaper.png')"
         @maximize="maximizeWindow(win.id)"
         @focus="focusWindow(win.id)"
         @move="(delta: { dx: number; dy: number }) => moveWindow(win.id, delta)"
+        @resize="(delta: { dx: number; dy: number; dw: number; dh: number }) => resizeWindow(win.id, delta)"
       >
         <template #icon>
           <span class="text-lg">{{ win.icon }}</span>
@@ -241,51 +262,49 @@ const wallpaperUrl = "url('/wallpaper.png')"
 
         <div v-else-if="win.id === 'projects'" class="h-full">
           <ExplorerShell title="Projects" path="C:\Users\Bas\Projects" class="h-full">
-            <div class="grid grid-cols-3 gap-6 p-4">
+            <div class="grid grid-cols-3 gap-6 p-4 text-center">
               <a
                 href="https://github.com/Nithiann/portfolio"
                 target="_blank"
                 class="group flex flex-col items-center p-4 rounded hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all"
               >
                 <img
-                  src="https://img.icons8.com/color/96/github.png"
-                  alt="GitHub"
+                  src="https://img.icons8.com/color/96/portfolio.png"
+                  alt="Portfolio"
                   class="w-16 h-16 mb-2"
                 />
-                <span class="text-sm font-semibold text-center group-hover:text-blue-600"
-                  >Portfolio Design</span
+                <span class="text-sm font-semibold group-hover:text-blue-600"
+                  >Vue Portfolio</span
                 >
-                <span class="text-xs text-gray-500 mt-1">Windows 7 Look</span>
+                <span class="text-xs text-gray-500 mt-1">Vue 3, Vite & Tailwind</span>
               </a>
               <a
                 href="#"
-                target="_blank"
                 class="group flex flex-col items-center p-4 rounded hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all"
               >
                 <img
-                  src="https://img.icons8.com/color/96/code.png"
-                  alt="App"
+                  src="https://img.icons8.com/color/96/cloud-storage.png"
+                  alt="VOSScloud"
                   class="w-16 h-16 mb-2"
                 />
-                <span class="text-sm font-semibold text-center group-hover:text-blue-600"
+                <span class="text-sm font-semibold group-hover:text-blue-600"
                   >VOSScloud</span
                 >
-                <span class="text-xs text-gray-500 mt-1">Real-time personal Cloud</span>
+                <span class="text-xs text-gray-500 mt-1">Symfony PHP Cloud Drive</span>
               </a>
               <a
                 href="#"
-                target="_blank"
                 class="group flex flex-col items-center p-4 rounded hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all"
               >
                 <img
-                  src="https://img.icons8.com/color/96/server.png"
-                  alt="Server"
+                  src="https://img.icons8.com/color/96/alarm-clock.png"
+                  alt="Alarm App"
                   class="w-16 h-16 mb-2"
                 />
-                <span class="text-sm font-semibold text-center group-hover:text-blue-600"
-                  >Microservices API</span
+                <span class="text-sm font-semibold group-hover:text-blue-600"
+                  >Not Another Alarm Clock</span
                 >
-                <span class="text-xs text-gray-500 mt-1">Node.js / Docker</span>
+                <span class="text-xs text-gray-500 mt-1">Flutter Challenge Alarm</span>
               </a>
             </div>
           </ExplorerShell>
@@ -342,48 +361,70 @@ const wallpaperUrl = "url('/wallpaper.png')"
 
         <div v-else-if="win.id === 'skills'" class="h-full">
           <ExplorerShell title="Programming Skills" path="C:\Windows\System32" class="h-full">
-            <div class="p-6">
-              <h2 class="text-lg font-bold mb-4 border-b flex items-center gap-2">
-                <img src="https://img.icons8.com/color/48/settings.png" class="w-5 h-5" />
-                System Capabilities
+            <div class="p-6 overflow-y-auto h-full">
+              <!-- Expertise -->
+              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+                <img src="https://img.icons8.com/color/48/star.png" class="w-4 h-4" />
+                Expertise (High Experience)
               </h2>
-              <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="p-4 border rounded bg-gray-50 flex items-center gap-3">
-                  <img src="https://img.icons8.com/color/48/vue-js.png" class="w-10 h-10" />
-                  <div>
-                    <div class="font-bold">Vue.js / Vite</div>
-                    <div class="w-32 h-2 bg-gray-200 rounded overflow-hidden">
-                      <div class="w-[95%] h-full bg-green-500"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="p-4 border rounded bg-gray-50 flex items-center gap-3">
-                  <img src="https://img.icons8.com/color/48/typescript.png" class="w-10 h-10" />
-                  <div>
-                    <div class="font-bold">TypeScript</div>
-                    <div class="w-32 h-2 bg-gray-200 rounded overflow-hidden">
-                      <div class="w-[90%] h-full bg-blue-500"></div>
+              <div class="grid grid-cols-2 gap-4 mb-8">
+                <div v-for="skill in [
+                  { name: 'Angular', icon: 'angularjs', level: '95%' },
+                  { name: 'PHP', icon: 'php', level: '90%' },
+                  { name: 'Express.js', icon: 'express-js', level: '85%' }
+                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                  <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
+                  <div class="flex-1">
+                    <div class="font-bold text-xs">{{ skill.name }}</div>
+                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                      <div class="h-full bg-blue-500" :style="{ width: skill.level }"></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <h2 class="text-lg font-bold mb-4 border-b flex items-center gap-2">
-                <img src="https://img.icons8.com/color/48/certificate.png" class="w-5 h-5" />
-                Certificates
+              <!-- Working Knowledge -->
+              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+                <img src="https://img.icons8.com/color/48/workflow.png" class="w-4 h-4" />
+                Working Knowledge
               </h2>
-              <div class="space-y-2">
-                <div
-                  class="flex items-center justify-between p-3 border-b hover:bg-gray-50 cursor-pointer"
-                >
-                  <span class="text-sm">AWS Certified Solutions Architect</span>
-                  <span class="text-blue-600 text-xs">View PDF</span>
+              <div class="grid grid-cols-2 gap-4 mb-8">
+                <div v-for="skill in [
+                  { name: 'Vue', icon: 'vue-js', level: '75%' },
+                  { name: 'React', icon: 'react-native', level: '70%' },
+                  { name: 'Flutter', icon: 'flutter', level: '65%' },
+                  { name: 'Kotlin', icon: 'kotlin', level: '60%' },
+                  { name: 'Java', icon: 'java-coffee-cup-logo', level: '60%' }
+                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                  <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
+                  <div class="flex-1">
+                    <div class="font-bold text-xs">{{ skill.name }}</div>
+                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                      <div class="h-full bg-green-500" :style="{ width: skill.level }"></div>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  class="flex items-center justify-between p-3 border-b hover:bg-gray-50 cursor-pointer"
-                >
-                  <span class="text-sm">Google Professional Cloud Developer</span>
-                  <span class="text-blue-600 text-xs">View PDF</span>
+              </div>
+
+              <!-- Learning / Academic / Legacy -->
+              <h2 class="text-sm font-bold mb-4 border-b flex items-center gap-2 text-gray-600 uppercase tracking-tighter">
+                <img src="https://img.icons8.com/color/48/light-bulb.png" class="w-4 h-4" />
+                Learning & Academic Experience
+              </h2>
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <div v-for="skill in [
+                  { name: 'C# .NET', icon: 'c-sharp-logotype', level: '80%' },
+                  { name: 'C# Game Dev', icon: 'unity', level: '45%' },
+                  { name: 'Rust', icon: 'rust', level: '25%' },
+                  { name: 'GO', icon: 'golang', level: '20%' }
+                ]" :key="skill.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3 shadow-sm">
+                  <img :src="`https://img.icons8.com/color/48/${skill.icon}.png`" class="w-8 h-8" />
+                  <div class="flex-1">
+                    <div class="font-bold text-xs">{{ skill.name }}</div>
+                    <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                      <div class="h-full bg-orange-500" :style="{ width: skill.level }"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

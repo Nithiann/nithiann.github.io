@@ -7,9 +7,11 @@ const props = defineProps<{
   isMaximized?: boolean;
 }>();
 
-const emit = defineEmits(['close', 'minimize', 'maximize', 'focus', 'move']);
+const emit = defineEmits(['close', 'minimize', 'maximize', 'focus', 'move', 'resize']);
 
 const isDragging = ref(false);
+const isResizing = ref(false);
+const resizeDirection = ref('');
 const startX = ref(0);
 const startY = ref(0);
 
@@ -33,16 +35,44 @@ const onMouseDown = (e: MouseEvent) => {
 };
 
 const onMouseMove = (e: MouseEvent) => {
-    if (!isDragging.value) return;
-    const dx = e.clientX - startX.value;
-    const dy = e.clientY - startY.value;
+    if (isDragging.value) {
+        const dx = e.clientX - startX.value;
+        const dy = e.clientY - startY.value;
+        startX.value = e.clientX;
+        startY.value = e.clientY;
+        emit('move', { dx, dy });
+    } else if (isResizing.value) {
+        const dx = e.clientX - startX.value;
+        const dy = e.clientY - startY.value;
+        startX.value = e.clientX;
+        startY.value = e.clientY;
+
+        let dw = 0, dh = 0, offX = 0, offY = 0;
+
+        if (resizeDirection.value.includes('e')) dw = dx;
+        if (resizeDirection.value.includes('w')) { dw = -dx; offX = dx; }
+        if (resizeDirection.value.includes('s')) dh = dy;
+        if (resizeDirection.value.includes('n')) { dh = -dy; offY = dy; }
+
+        emit('resize', { dx: offX, dy: offY, dw, dh });
+    }
+};
+
+const onResizeStart = (direction: string, e: MouseEvent) => {
+    if (props.isMaximized) return;
+    isResizing.value = true;
+    resizeDirection.value = direction;
     startX.value = e.clientX;
     startY.value = e.clientY;
-    emit('move', { dx, dy });
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    e.preventDefault();
+    e.stopPropagation();
 };
 
 const onMouseUp = () => {
     isDragging.value = false;
+    isResizing.value = false;
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
 };
@@ -65,9 +95,23 @@ onUnmounted(() => {
     @mousedown="onMouseDown"
   >
     <div
-        class="aero-glass flex flex-col h-full overflow-hidden border border-white/30"
+        class="aero-glass flex flex-col h-full overflow-hidden border border-white/30 relative"
         :class="{ 'rounded-t-lg': !isMaximized }"
     >
+      <!-- Resize Handles (only when not maximized) -->
+      <template v-if="!isMaximized">
+        <!-- Edges -->
+        <div class="absolute top-0 left-2 right-2 h-1 cursor-n-resize z-10" @mousedown="onResizeStart('n', $event)"></div>
+        <div class="absolute bottom-0 left-2 right-2 h-1 cursor-s-resize z-10" @mousedown="onResizeStart('s', $event)"></div>
+        <div class="absolute top-2 bottom-2 right-0 w-1 cursor-e-resize z-10" @mousedown="onResizeStart('e', $event)"></div>
+        <div class="absolute top-2 bottom-2 left-0 w-1 cursor-w-resize z-10" @mousedown="onResizeStart('w', $event)"></div>
+        <!-- Corners -->
+        <div class="absolute top-0 left-0 w-2 h-2 cursor-nw-resize z-20" @mousedown="onResizeStart('nw', $event)"></div>
+        <div class="absolute top-0 right-0 w-2 h-2 cursor-ne-resize z-20" @mousedown="onResizeStart('ne', $event)"></div>
+        <div class="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize z-20" @mousedown="onResizeStart('sw', $event)"></div>
+        <div class="absolute bottom-0 right-0 w-2 h-2 cursor-se-resize z-20" @mousedown="onResizeStart('se', $event)"></div>
+      </template>
+
       <!-- Title Bar -->
       <div
         class="flex items-center justify-between px-3 py-2 select-none cursor-grab active:cursor-grabbing"
