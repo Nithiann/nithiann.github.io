@@ -5,6 +5,9 @@ import Window from './components/Window.vue'
 import Taskbar from './components/Taskbar.vue'
 import StartMenu from './components/StartMenu.vue'
 import ExplorerShell from './components/ExplorerShell.vue'
+import BootScreen from './components/BootScreen.vue'
+
+const isBooting = ref(true)
 
 // Window state management
 interface AppWindow {
@@ -157,7 +160,11 @@ const wallpaperUrl = "url('/wallpaper.png')"
 </script>
 
 <template>
+  <BootScreen v-if="isBooting" @finished="isBooting = false" />
+
+  <Transition name="fade-desktop">
   <div
+    v-if="!isBooting"
     class="h-screen w-screen relative overflow-hidden bg-cover bg-center"
     :style="{ backgroundImage: wallpaperUrl }"
   >
@@ -525,6 +532,7 @@ const wallpaperUrl = "url('/wallpaper.png')"
       "
     />
   </div>
+  </Transition>
 </template>
 
 <style>
@@ -543,5 +551,12 @@ body,
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+.fade-desktop-enter-active {
+  transition: opacity 1.5s ease;
+}
+.fade-desktop-enter-from {
+  opacity: 0;
 }
 </style>

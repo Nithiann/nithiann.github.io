@@ -90,7 +90,7 @@ onUnmounted(() => {
       'window-active': isActive,
       'rounded-t-lg shadow-2xl': !isMaximized,
       'z-[1000]': isActive,
-      'transition-[width,height,top,left] duration-200': !isDragging
+      'transition-[width,height,top,left] duration-200': !isDragging && !isResizing
     }"
     @mousedown="onMouseDown"
   >
@@ -101,15 +101,15 @@ onUnmounted(() => {
       <!-- Resize Handles (only when not maximized) -->
       <template v-if="!isMaximized">
         <!-- Edges -->
-        <div class="absolute top-0 left-2 right-2 h-1 cursor-n-resize z-10" @mousedown="onResizeStart('n', $event)"></div>
-        <div class="absolute bottom-0 left-2 right-2 h-1 cursor-s-resize z-10" @mousedown="onResizeStart('s', $event)"></div>
-        <div class="absolute top-2 bottom-2 right-0 w-1 cursor-e-resize z-10" @mousedown="onResizeStart('e', $event)"></div>
-        <div class="absolute top-2 bottom-2 left-0 w-1 cursor-w-resize z-10" @mousedown="onResizeStart('w', $event)"></div>
+        <div class="absolute top-0 left-4 right-4 h-1.5 cursor-n-resize z-10" @mousedown="onResizeStart('n', $event)"></div>
+        <div class="absolute bottom-0 left-4 right-4 h-1.5 cursor-s-resize z-10" @mousedown="onResizeStart('s', $event)"></div>
+        <div class="absolute top-4 bottom-4 right-0 w-1.5 cursor-e-resize z-10" @mousedown="onResizeStart('e', $event)"></div>
+        <div class="absolute top-4 bottom-4 left-0 w-1.5 cursor-w-resize z-10" @mousedown="onResizeStart('w', $event)"></div>
         <!-- Corners -->
-        <div class="absolute top-0 left-0 w-2 h-2 cursor-nw-resize z-20" @mousedown="onResizeStart('nw', $event)"></div>
-        <div class="absolute top-0 right-0 w-2 h-2 cursor-ne-resize z-20" @mousedown="onResizeStart('ne', $event)"></div>
-        <div class="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize z-20" @mousedown="onResizeStart('sw', $event)"></div>
-        <div class="absolute bottom-0 right-0 w-2 h-2 cursor-se-resize z-20" @mousedown="onResizeStart('se', $event)"></div>
+        <div class="absolute top-0 left-0 w-4 h-4 cursor-nw-resize z-20" @mousedown="onResizeStart('nw', $event)"></div>
+        <div class="absolute top-0 right-0 w-4 h-4 cursor-ne-resize z-20" @mousedown="onResizeStart('ne', $event)"></div>
+        <div class="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize z-20" @mousedown="onResizeStart('sw', $event)"></div>
+        <div class="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize z-20" @mousedown="onResizeStart('se', $event)"></div>
       </template>
 
       <!-- Title Bar -->
