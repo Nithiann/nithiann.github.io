@@ -268,9 +268,9 @@ const wallpaperUrl = "url('/wallpaper.png')"
                   class="w-16 h-16 mb-2"
                 />
                 <span class="text-sm font-semibold text-center group-hover:text-blue-600"
-                  >AI Dashboard</span
+                  >VOSScloud</span
                 >
-                <span class="text-xs text-gray-500 mt-1">Real-time Analytics</span>
+                <span class="text-xs text-gray-500 mt-1">Real-time personal Cloud</span>
               </a>
               <a
                 href="#"
