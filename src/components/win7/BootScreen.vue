@@ -28,7 +28,7 @@ onMounted(() => {
       </div>
 
       <!-- Final Logo Phase -->
-      <div v-if="phase >= 3" class="logo-container" :class="{ 'logo-fade-in': phase === 3, 'logo-fade-out': phase === 4 }">
+      <div v-if="phase >= 3" class="logo-container" :class="{ 'logo-fade-in': phase === 3, 'logo-fade-out': phase === 4 }" >
         <svg viewBox="0 0 100 100" class="w-32 h-48 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">
           <!-- Windows 7 Flag Logo -->
           <path d="M10,25 Q30,15 50,25 Q70,35 90,25 L90,75 Q70,85 50,75 Q30,65 10,75 Z" fill="none" />
