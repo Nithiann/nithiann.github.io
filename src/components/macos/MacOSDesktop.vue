@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { portfolioData } from '../../data/portfolio'
 import { useWindowManagement } from '../../composables/useWindowManagement'
 
 const {
   windows,
-  topZIndex,
   focusWindow,
   openWindow,
   closeWindow,
@@ -18,7 +16,7 @@ const {
   skills: { isOpen: false, zIndex: 10, x: 250, y: 200, width: 550, height: 450 },
 })
 
-const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-galaxy-andromeda-wallpaper.jpg"
+const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mojave.jpg"
 </script>
 
 <template>
@@ -27,7 +25,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
     <div class="h-6 bg-white/70 backdrop-blur-3xl border-b border-black/10 flex items-center px-4 justify-between text-[11px] font-semibold text-black/90 shadow-[0_1px_5px_rgba(0,0,0,0.1)] z-[10000] relative">
       <div class="flex items-center space-x-4">
         <div class="px-2 hover:bg-black/5 rounded cursor-default flex items-center">
-            <svg viewBox="0 0 100 100" fill="currentColor" class="w-3.5 h-3.5 mb-1">
+            <svg viewBox="0 0 100 100" fill="currentColor" class="w-5 h-5">
                 <path d="M82.2,46.1c-0.1-8.2,6.7-12.1,7-12.3c-3.8-5.6-9.7-6.3-11.8-6.4c-5-0.5-9.8,3-12.3,3c-2.5,0-6.4-2.9-10.5-2.8 c-5.4,0.1-10.4,3.2-13.2,8.1c-5.7,9.9-1.5,24.6,4,32.6c2.7,3.9,5.9,8.3,10.2,8.2c4.1-0.2,5.7-2.6,10.6-2.6c5,0,6.4,2.6,10.7,2.5 c4.4-0.1,7.1-4,9.8-7.9c3.1-4.5,4.4-8.9,4.4-9.1C91.1,59.3,82.3,55.9,82.2,46.1z M71.3,21.8c2.3-2.7,3.8-6.5,3.4-10.3 c-3.2,0.1-7.2,2.2-9.4,4.9c-2,2.3-3.8,6.2-3.3,10C65.4,26.6,69.1,24.5,71.3,21.8z" />
             </svg>
         </div>
@@ -103,7 +101,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
               </div>
               <div class="space-y-4">
                 <h2 class="font-bold text-gray-400 uppercase text-[11px] tracking-[0.2em] mb-4 border-b pb-2">Academic Background</h2>
-                <div v-for="edu in portfolioData.personal.education" class="mb-6 p-4 bg-gray-50 border border-gray-100 rounded-xl shadow-sm">
+                <div v-for="edu in portfolioData.personal.education" :key="edu.degree" class="mb-6 p-4 bg-gray-50 border border-gray-100 rounded-xl shadow-sm">
                    <p class="font-extrabold text-sm text-black">{{ edu.degree }}</p>
                    <p class="text-[11px] text-blue-500 font-bold italic mt-1 uppercase">{{ edu.period }}</p>
                 </div>
@@ -112,7 +110,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
           </div>
 
           <div v-else-if="id === 'projects'" class="grid grid-cols-2 gap-8">
-            <div v-for="p in portfolioData.projects" class="bg-gradient-to-b from-white to-gray-50 border border-gray-100 p-8 rounded-3xl hover:shadow-2xl transition-all flex flex-col items-center text-center shadow-md cursor-pointer group">
+            <div v-for="p in portfolioData.projects" :key="p.title" class="bg-gradient-to-b from-white to-gray-50 border border-gray-100 p-8 rounded-3xl hover:shadow-2xl transition-all flex flex-col items-center text-center shadow-md cursor-pointer group">
               <div class="w-24 h-24 mb-6 transition-transform group-hover:scale-110">
                 <img :src="p.icon" class="w-full h-full object-contain filter drop-shadow-lg" />
               </div>
@@ -123,7 +121,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
           </div>
 
           <div v-else-if="id === 'experience'" class="max-w-3xl mx-auto space-y-12 py-4">
-            <div v-for="exp in portfolioData.experience" class="relative pl-12 group">
+            <div v-for="exp in portfolioData.experience" :key="exp.company" class="relative pl-12 group">
               <div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-[0_0_15px_rgba(37,99,235,0.4)] group-hover:scale-125 transition-transform z-10"></div>
               <div class="absolute left-2 top-6 bottom-[-48px] w-0.5 bg-gray-100 last:hidden"></div>
               <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm group-hover:bg-white group-hover:shadow-md transition-all">
@@ -133,7 +131,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
                   <span class="text-gray-400">{{ exp.period }}</span>
                 </p>
                 <div class="space-y-3">
-                  <div v-for="d in exp.description" class="text-sm text-gray-600 flex items-start leading-relaxed font-medium">
+                  <div v-for="d in exp.description" :key="d" class="text-sm text-gray-600 flex items-start leading-relaxed font-medium">
                     <span class="mr-3 text-blue-500 mt-1">▹</span> {{ d }}
                   </div>
                 </div>
@@ -148,7 +146,7 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
                  Expertise
                </h3>
                <div class="space-y-6">
-                 <div v-for="s in portfolioData.skills.expertise">
+                 <div v-for="s in portfolioData.skills.expertise" :key="s.name">
                     <div class="flex justify-between items-center text-xs mb-2.5">
                       <div class="flex items-center">
                         <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-6 h-6 mr-4 transition-transform hover:rotate-12" />
@@ -166,14 +164,14 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
                <div class="bg-gray-50/50 p-8 rounded-3xl border border-gray-100 shadow-sm">
                  <h3 class="font-black mb-6 uppercase text-[11px] tracking-[0.3em] text-gray-400 border-b pb-2">Knowledge</h3>
                   <div class="flex flex-wrap gap-2.5">
-                    <span v-for="s in portfolioData.skills.working" class="px-4 py-1.5 bg-white text-gray-600 rounded-xl text-[11px] border border-gray-100 shadow-sm font-bold transition-all hover:scale-105 cursor-default">{{ s.name }}</span>
+                    <span v-for="s in portfolioData.skills.working" :key="s.name" class="px-4 py-1.5 bg-white text-gray-600 rounded-xl text-[11px] border border-gray-100 shadow-sm font-bold transition-all hover:scale-105 cursor-default">{{ s.name }}</span>
                   </div>
                </div>
                <div class="bg-blue-600 p-8 rounded-3xl shadow-xl shadow-blue-500/20 relative overflow-hidden group">
                   <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
                   <h3 class="font-black mb-6 uppercase text-[11px] tracking-[0.3em] text-blue-100 border-b border-white/20 pb-2">Learning</h3>
                   <div class="flex flex-wrap gap-2.5">
-                    <span v-for="s in portfolioData.skills.learning" class="px-4 py-1.5 bg-white/15 backdrop-blur-md text-white rounded-xl text-[11px] font-black border border-white/10">{{ s.name }}</span>
+                    <span v-for="s in portfolioData.skills.learning" :key="s.name" class="px-4 py-1.5 bg-white/15 backdrop-blur-md text-white rounded-xl text-[11px] font-black border border-white/10">{{ s.name }}</span>
                   </div>
                </div>
              </div>
@@ -185,23 +183,24 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
     <!-- Dock -->
     <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-end space-x-2.5 px-5 py-2.5 bg-white/20 backdrop-blur-3xl border border-white/30 rounded-[28px] shadow-[0_25px_50px_rgba(0,0,0,0.4)] z-[10000]">
       <div v-for="item in ['profile', 'projects', 'experience', 'skills']"
+           :key="item"
            class="group relative transition-all duration-300 hover:scale-140 hover:-translate-y-8 cursor-pointer flex flex-col items-center"
            @click="openWindow(item)"
       >
-        <div class="absolute -top-14 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-xl text-white px-4 py-2 rounded-2xl text-[11px] font-bold opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 capitalize shadow-2xl border border-white/15 translate-y-2 group-hover:translate-y-0">
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-xl text-white px-4 py-2 rounded-2xl text-[11px] font-bold opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 capitalize shadow-2xl border border-white/15 translate-y-0 group-hover:translate-y-0">
           {{ item }}
         </div>
         <div class="w-16 h-16 p-1.5 flex items-center justify-center">
-          <img v-if="item === 'profile'" src="https://img.icons8.com/color/96/finder.png" class="w-full h-full drop-shadow-xl" />
+          <img v-if="item === 'profile'" src="https://img.icons8.com/color/96/mac-logo.png" class="w-full h-full drop-shadow-xl" />
           <img v-else-if="item === 'projects'" src="https://img.icons8.com/color/96/opened-folder.png" class="w-full h-full drop-shadow-xl" />
           <img v-else-if="item === 'experience'" src="https://img.icons8.com/color/96/briefcase.png" class="w-full h-full drop-shadow-xl" />
           <img v-else-if="item === 'skills'" src="https://img.icons8.com/color/96/code.png" class="w-full h-full drop-shadow-xl" />
         </div>
 
-        <div v-if="windows[item].isOpen" class="w-1.5 h-1.5 bg-black/80 rounded-full shadow-inner mt-1.5"></div>
+        <div v-if="windows[item]?.isOpen" class="w-1.5 h-1.5 bg-black/80 rounded-full shadow-inner mt-1.5"></div>
       </div>
       <div class="w-[1px] h-14 bg-white/20 mx-4 self-center shadow-sm"></div>
-      <div class="transition-all duration-300 hover:scale-140 hover:-translate-y-8 cursor-pointer group flex flex-col items-center">
+      <div class="transition-all duration-300 hover:scale-100 hover:-translate-y-8 cursor-pointer group flex flex-col items-center">
         <div class="w-16 h-16 p-1.5 flex items-center justify-center">
           <img src="https://img.icons8.com/color/96/trash.png" class="w-full h-full drop-shadow-xl" />
         </div>
@@ -215,8 +214,8 @@ const wallpaper = "https://cdn.osxdaily.com/wp-content/uploads/2011/02/lion-gala
   backdrop-filter: blur(30px) saturate(150%);
 }
 
-.hover\:scale-140:hover {
-  transform: scale(1.4) translateY(-2rem);
+.hover\:scale-100:hover {
+  transform: scale(1.0);
 }
 
 @keyframes window-in-mac {

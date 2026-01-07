@@ -14,8 +14,11 @@ const countdown = ref(10)
 let timer: number
 
 const selectOS = (index: number) => {
-  clearInterval(timer)
-  emit('select', options[index].id)
+  const option = options[index]
+  if (option) {
+    clearInterval(timer)
+    emit('select', option.id)
+  }
 }
 
 const handleKeydown = (e: KeyboardEvent) => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const emit = defineEmits(['finished'])
 
@@ -30,8 +30,9 @@ let logIndex = 0
 
 onMounted(() => {
   const interval = setInterval(() => {
-    if (logIndex < bootLogs.length) {
-      visibleLogs.value.push(bootLogs[logIndex])
+    const log = bootLogs[logIndex]
+    if (log) {
+      visibleLogs.value.push(log)
       logIndex++
       // Keep scroll at bottom
       window.scrollTo(0, document.body.scrollHeight)

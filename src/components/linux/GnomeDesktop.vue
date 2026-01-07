@@ -5,7 +5,6 @@ import { useWindowManagement } from '../../composables/useWindowManagement'
 
 const {
   windows,
-  topZIndex,
   focusWindow,
   openWindow,
   closeWindow,
@@ -74,7 +73,7 @@ const selectWindow = (id: string) => {
                <img v-else-if="item === 'projects'" src="https://img.icons8.com/color/48/folder-invoices.png" class="w-8 h-8 opacity-80 group-hover:opacity-100" />
                <img v-else-if="item === 'experience'" src="https://img.icons8.com/color/48/briefcase.png" class="w-8 h-8 opacity-80 group-hover:opacity-100" />
                <img v-else-if="item === 'skills'" src="https://img.icons8.com/color/48/code.png" class="w-8 h-8 opacity-80 group-hover:opacity-100" />
-               <div v-if="windows[item].isOpen" class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-white rounded-r-[1px] shadow-sm"></div>
+               <div v-if="windows[item]?.isOpen" class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-white rounded-r-[1px] shadow-sm"></div>
             </div>
          </div>
       </div>
@@ -129,7 +128,7 @@ const selectWindow = (id: string) => {
               </div>
 
               <div class="grid grid-cols-2 gap-8">
-                <div v-for="edu in portfolioData.personal.education" class="border border-gray-100 p-6 rounded-2xl bg-white shadow-sm hover:border-gray-200 transition-colors">
+                <div v-for="edu in portfolioData.personal.education" :key="edu.degree" class="border border-gray-100 p-6 rounded-2xl bg-white shadow-sm hover:border-gray-200 transition-colors">
                   <h3 class="text-sm font-black text-gray-900 mb-1">{{ edu.degree }}</h3>
                   <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">{{ edu.period }}</p>
                 </div>
@@ -138,7 +137,7 @@ const selectWindow = (id: string) => {
           </div>
 
           <div v-else-if="id === 'projects'" class="space-y-4">
-            <div v-for="p in portfolioData.projects" class="group flex items-center p-6 bg-white hover:bg-gray-50 rounded-2xl border border-gray-100 transition-all cursor-pointer shadow-sm hover:shadow-md">
+            <div v-for="p in portfolioData.projects" :key="p.title" class="group flex items-center p-6 bg-white hover:bg-gray-50 rounded-2xl border border-gray-100 transition-all cursor-pointer shadow-sm hover:shadow-md">
               <div class="w-16 h-16 mr-6 p-3 bg-gray-100 rounded-xl group-hover:scale-110 transition-transform">
                 <img :src="p.icon" class="w-full h-full object-contain" />
               </div>
@@ -154,7 +153,7 @@ const selectWindow = (id: string) => {
           </div>
 
           <div v-else-if="id === 'experience'" class="space-y-6">
-            <div v-for="exp in portfolioData.experience" class="p-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-blue-100 transition-colors group">
+            <div v-for="exp in portfolioData.experience" :key="exp.company" class="p-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-blue-100 transition-colors group">
               <div class="flex justify-between items-start mb-6">
                 <div>
                   <h3 class="font-black text-2xl text-gray-900 mb-1 tracking-tight group-hover:text-blue-600 transition-colors">{{ exp.role }}</h3>
@@ -163,7 +162,7 @@ const selectWindow = (id: string) => {
                 <span class="text-[10px] bg-gray-100 text-gray-500 px-3 py-1 rounded-full font-black tracking-wider uppercase">{{ exp.period }}</span>
               </div>
               <div class="space-y-3">
-                <div v-for="d in exp.description" class="text-gray-600 text-sm flex items-start leading-relaxed">
+                <div v-for="d in exp.description" :key="d" class="text-gray-600 text-sm flex items-start leading-relaxed">
                   <span class="mr-4 mt-2 w-1.5 h-1.5 bg-blue-500 rounded-full shrink-0 group-hover:scale-125 transition-transform"></span>
                   {{ d }}
                 </div>

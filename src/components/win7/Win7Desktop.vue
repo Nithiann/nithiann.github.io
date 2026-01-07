@@ -4,10 +4,10 @@ import { useWindowManagement } from '../../composables/useWindowManagement'
 import { portfolioData } from '../../data/portfolio'
 
 // Shared Components
-import Window from '../shared/Window.vue'
 import DesktopIcon from '../shared/DesktopIcon.vue'
 import ExplorerShell from '../shared/ExplorerShell.vue'
-import Taskbar from './Taskbar.vue'
+import Win7Taskbar from './Win7Taskbar.vue'
+import AppWindow from '../shared/AppWindow.vue'
 import StartMenu from './StartMenu.vue'
 
 const {
@@ -72,7 +72,7 @@ const win7Icons = {
 
     <!-- Windows -->
     <template v-for="(win, id) in windows" :key="id">
-      <Window
+      <AppWindow
         v-if="win.isOpen"
         :title="id === 'profile' ? 'My Profile' : id === 'projects' ? 'Projects' : id === 'experience' ? 'Work Experience' : 'Programming Skills'"
         :isActive="win.zIndex === topZIndex"
@@ -197,11 +197,11 @@ const win7Icons = {
             </div>
           </ExplorerShell>
         </div>
-      </Window>
+      </AppWindow>
     </template>
 
     <!-- Taskbar -->
-    <Taskbar @openStartMenu="toggleStartMenu">
+    <Win7Taskbar @openStartMenu="toggleStartMenu">
       <template #apps>
         <div v-for="(win, id) in windows" :key="id">
           <div v-if="win.isOpen" class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all" :class="{'bg-white/30 border-white/40 shadow-inner': win.zIndex === topZIndex}" @click="toggleWindow(id)">
@@ -210,7 +210,7 @@ const win7Icons = {
           </div>
         </div>
       </template>
-    </Taskbar>
+    </Win7Taskbar>
 
     <!-- Start Menu -->
     <StartMenu
