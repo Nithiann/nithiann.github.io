@@ -16,8 +16,8 @@ const {
   focusWindow,
   openWindow,
   closeWindow,
-  handleDrag,
-  handleResize
+  updateWindowPosition,
+  updateWindowSize
 } = useWindowManagement({
   profile: { isOpen: false, zIndex: 10, x: 100, y: 50, width: 800, height: 600 },
   projects: { isOpen: false, zIndex: 10, x: 150, y: 100, width: 700, height: 500 },
@@ -28,8 +28,9 @@ const {
 const isStartMenuOpen = ref(false)
 const toggleStartMenu = () => { isStartMenuOpen.value = !isStartMenuOpen.value }
 const toggleWindow = (id: string) => {
-  if (windows.value[id].isOpen) focusWindow(id)
-  else openWindow(id)
+  const win = windows.value[id]
+  if (win && win.isOpen) focusWindow(id)
+  else if (win) openWindow(id)
 }
 
 const wallpaperUrl = "url('/wallpaper.png')"
@@ -86,8 +87,8 @@ const win7Icons = {
         }"
         @close="closeWindow(id)"
         @focus="focusWindow(id)"
-        @move="handleDrag(id, $event as any)"
-        @resize="(e: any) => handleResize(id, e.orig, e.dir)"
+        @move="(e: any) => updateWindowPosition(id, e)"
+        @resize="(e: any) => updateWindowSize(id, e)"
       >
         <template #icon><span class="text-lg">{{ win7Icons[id as keyof typeof win7Icons] }}</span></template>
 

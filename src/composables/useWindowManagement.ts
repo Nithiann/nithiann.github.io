@@ -15,21 +15,25 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
   const topZIndex = ref(100)
 
   const focusWindow = (id: string) => {
+    if (!windows.value[id]) return
     topZIndex.value += 1
     windows.value[id].zIndex = topZIndex.value
   }
 
   const openWindow = (id: string) => {
+    if (!windows.value[id]) return
     windows.value[id].isOpen = true
     focusWindow(id)
   }
 
   const closeWindow = (id: string) => {
+    if (!windows.value[id]) return
     windows.value[id].isOpen = false
   }
 
   const handleDrag = (id: string, e: MouseEvent) => {
     const win = windows.value[id]
+    if (!win) return
     const startX = e.clientX
     const startY = e.clientY
     const initialX = win.x
@@ -52,6 +56,7 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
   const handleResize = (id: string, e: MouseEvent, direction: string) => {
     e.stopPropagation()
     const win = windows.value[id]
+    if (!win) return
     const startX = e.clientX
     const startY = e.clientY
     const startWidth = win.width
@@ -90,6 +95,46 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     window.addEventListener('mouseup', onMouseUp)
   }
 
+  const updateWindowPosition = (id: string, { dx, dy }: { dx: number, dy: number }) => {
+    const win = windows.value[id]
+    if (!win) return
+    win.x += dx
+    win.y += dy
+  }
+
+  const updateWindowSize = (id: string, { dx, dy, dw, dh }: { dx: number, dy: number, dw: number, dh: number }) => {
+    const win = windows.value[id]
+    if (!win) return
+
+    // Position updates
+    win.x += dx
+    win.y += dy
+
+    // Dimension updates with constraints
+    const nextWidth = win.width + dw
+    const nextHeight = win.height + dh
+
+    if (nextWidth >= 200) {
+      win.width = nextWidth
+    } else {
+      // If we hit minimum width, we need to adjust X if we were resizing from the west
+      if (dx !== 0) {
+        win.x -= (200 - nextWidth)
+      }
+      win.width = 200
+    }
+
+    if (nextHeight >= 150) {
+      win.height = nextHeight
+    } else {
+      // If we hit minimum height, we need to adjust Y if we were resizing from the north
+      if (dy !== 0) {
+        win.y -= (150 - nextHeight)
+      }
+      win.height = 150
+    }
+  }
+
   return {
     windows,
     topZIndex,
@@ -97,6 +142,8 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     openWindow,
     closeWindow,
     handleDrag,
-    handleResize
+    handleResize,
+    updateWindowPosition,
+    updateWindowSize
   }
 }
