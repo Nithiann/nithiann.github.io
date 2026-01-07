@@ -5,7 +5,7 @@ const emit = defineEmits(['select'])
 
 const options = [
   { id: 'win7', name: 'Windows 7', detail: '(loader on /dev/sda1)' },
-  { id: 'macos', name: 'MacOS (Snow Leopard)', detail: '(loader on /dev/sda2)' },
+  { id: 'macos', name: 'MacOS (Mojave)', detail: '(loader on /dev/sda2)' },
   { id: 'linux', name: 'Linux (GNOME)', detail: '(loader on /dev/sda3)' },
 ]
 
@@ -52,7 +52,7 @@ onUnmounted(() => {
 <template>
   <div class="fixed inset-0 bg-[#0000aa] text-white font-mono flex flex-col p-8 z-[20000] select-none">
     <div class="max-w-4xl mx-auto w-full border-2 border-white p-4 flex-1 flex flex-col bg-black">
-      <h1 class="text-center mb-8 border-b border-white pb-4">GNU GRUB  version 1.99-21ubuntu3.1</h1>
+      <h1 class="text-center mb-8 border-b border-white pb-4">GNU GRUB  version 1.99-21BasVoss3.1</h1>
 
       <p class="mb-4 text-sm">Use the ↑ and ↓ keys to select which entry is highlighted.<br>
       Press enter to boot the selected OS, 'e' to edit the commands before booting or 'c' for a command-line.</p>
