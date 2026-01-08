@@ -19,7 +19,7 @@ const {
   minimizeWindow,
   maximizeWindow,
   updateWindowPosition,
-  updateWindowSize
+  updateWindowSize,
 } = useWindowManagement({
   profile: { isOpen: false, zIndex: 10, x: 100, y: 50, width: 800, height: 600 },
   projects: { isOpen: false, zIndex: 10, x: 150, y: 100, width: 700, height: 500 },
@@ -28,7 +28,9 @@ const {
 })
 
 const isStartMenuOpen = ref(false)
-const toggleStartMenu = () => { isStartMenuOpen.value = !isStartMenuOpen.value }
+const toggleStartMenu = () => {
+  isStartMenuOpen.value = !isStartMenuOpen.value
+}
 const toggleWindow = (id: string) => {
   const win = windows.value[id]
   if (win && win.isOpen) focusWindow(id)
@@ -42,12 +44,15 @@ const win7Icons = {
   profile: '👤',
   projects: '📁',
   experience: '💼',
-  skills: '💻'
+  skills: '💻',
 }
 </script>
 
 <template>
-  <div class="h-screen w-screen relative overflow-hidden bg-cover bg-center" :style="{ backgroundImage: wallpaperUrl }">
+  <div
+    class="h-screen w-screen relative overflow-hidden bg-cover bg-center"
+    :style="{ backgroundImage: wallpaperUrl }"
+  >
     <!-- Desktop Icons -->
     <div class="p-4 grid grid-flow-col grid-rows-10 w-fit gap-2">
       <DesktopIcon
@@ -76,24 +81,36 @@ const win7Icons = {
     <template v-for="(win, id) in windows" :key="id">
       <AppWindow
         v-if="win.isOpen && !win.isMinimized"
-        :title="id === 'profile' ? 'My Profile' : id === 'projects' ? 'Projects' : id === 'experience' ? 'Work Experience' : 'Programming Skills'"
+        :title="
+          id === 'profile'
+            ? 'My Profile'
+            : id === 'projects'
+              ? 'Projects'
+              : id === 'experience'
+                ? 'Work Experience'
+                : 'Programming Skills'
+        "
         :isActive="win.zIndex === topZIndex"
         :isMaximized="win.isMaximized"
-        :style="win.isMaximized ? {
-          left: '0',
-          top: '0',
-          width: '100vw',
-          height: 'calc(100vh - 40px)',
-          zIndex: win.zIndex,
-          position: 'absolute'
-        } : {
-          left: win.x + 'px',
-          top: win.y + 'px',
-          width: win.width + 'px',
-          height: win.height + 'px',
-          zIndex: win.zIndex,
-          position: 'absolute'
-        }"
+        :style="
+          win.isMaximized
+            ? {
+                left: '0',
+                top: '0',
+                width: '100vw',
+                height: 'calc(100vh - 40px)',
+                zIndex: win.zIndex,
+                position: 'absolute',
+              }
+            : {
+                left: win.x + 'px',
+                top: win.y + 'px',
+                width: win.width + 'px',
+                height: win.height + 'px',
+                zIndex: win.zIndex,
+                position: 'absolute',
+              }
+        "
         @close="closeWindow(id)"
         @minimize="minimizeWindow(id)"
         @maximize="maximizeWindow(id)"
@@ -101,16 +118,26 @@ const win7Icons = {
         @move="(e: any) => updateWindowPosition(id, e)"
         @resize="(e: any) => updateWindowSize(id, e)"
       >
-        <template #icon><span class="text-lg">{{ win7Icons[id as keyof typeof win7Icons] }}</span></template>
+        <template #icon
+          ><span class="text-lg">{{ win7Icons[id as keyof typeof win7Icons] }}</span></template
+        >
 
         <!-- Profile Content -->
         <div v-if="id === 'profile'" class="h-full">
           <ExplorerShell title="My Profile" path="C:\Users\Bas\Documents" class="h-full">
-            <div class="max-w-3xl mx-auto border shadow-sm p-8 bg-white font-serif text-gray-900 overflow-auto h-full">
-              <h1 class="text-3xl font-bold border-b-2 border-gray-800 pb-2 mb-6 uppercase tracking-tighter">Curriculum Vitae</h1>
+            <div
+              class="max-w-3xl mx-auto border shadow-sm p-8 bg-white font-serif text-gray-900 overflow-auto h-full"
+            >
+              <h1
+                class="text-3xl font-bold border-b-2 border-gray-800 pb-2 mb-6 uppercase tracking-tighter"
+              >
+                Curriculum Vitae
+              </h1>
 
               <section class="mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">Personal Information</h2>
+                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
+                  Personal Information
+                </h2>
                 <div class="grid grid-cols-2 gap-4 text-sm">
                   <div><strong>Name:</strong> {{ portfolioData.personal.name }}</div>
                   <div><strong>Location:</strong> {{ portfolioData.personal.location }}</div>
@@ -120,13 +147,21 @@ const win7Icons = {
               </section>
 
               <section class="mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">Summary</h2>
+                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
+                  Summary
+                </h2>
                 <p class="text-sm leading-relaxed">{{ portfolioData.personal.summary }}</p>
               </section>
 
               <section>
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">Education</h2>
-                <div v-for="edu in portfolioData.personal.education" :key="edu.degree" class="text-sm mb-2">
+                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
+                  Education
+                </h2>
+                <div
+                  v-for="edu in portfolioData.personal.education"
+                  :key="edu.degree"
+                  class="text-sm mb-2"
+                >
                   <p class="font-bold">{{ edu.degree }}</p>
                   <p class="text-gray-600 italic">{{ edu.period }}</p>
                 </div>
@@ -156,10 +191,20 @@ const win7Icons = {
 
         <!-- Experience Content -->
         <div v-else-if="id === 'experience'" class="h-full">
-          <ExplorerShell title="Work Experience" path="C:\Users\Bas\Documents\Career" class="h-full">
+          <ExplorerShell
+            title="Work Experience"
+            path="C:\Users\Bas\Documents\Career"
+            class="h-full"
+          >
             <div class="space-y-8 p-8 overflow-auto h-full text-black">
-              <div v-for="exp in portfolioData.experience" :key="exp.period" class="relative pl-6 border-l-2 border-blue-500">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
+              <div
+                v-for="exp in portfolioData.experience"
+                :key="exp.period"
+                class="relative pl-6 border-l-2 border-blue-500"
+              >
+                <div
+                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
+                ></div>
                 <div class="bg-gray-50 p-4 rounded shadow-sm">
                   <h3 class="font-bold text-blue-700">{{ exp.role }} @ {{ exp.company }}</h3>
                   <p class="text-xs text-gray-500 mb-2">{{ exp.period }} | {{ exp.location }}</p>
@@ -179,11 +224,17 @@ const win7Icons = {
               <div class="mb-8">
                 <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">Expertise</h3>
                 <div class="grid grid-cols-2 gap-4">
-                  <div v-for="s in portfolioData.skills.expertise" :key="s.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3">
+                  <div
+                    v-for="s in portfolioData.skills.expertise"
+                    :key="s.name"
+                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
+                  >
                     <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
                     <div class="flex-1">
                       <div class="font-bold text-xs">{{ s.name }}</div>
-                      <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                      <div
+                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                      >
                         <div class="h-full bg-blue-500" :style="{ width: s.level }"></div>
                       </div>
                     </div>
@@ -191,14 +242,45 @@ const win7Icons = {
                 </div>
               </div>
 
-               <div class="mb-8">
-                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">Working Knowledge</h3>
+              <div class="mb-8">
+                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">
+                  Working Knowledge
+                </h3>
                 <div class="grid grid-cols-2 gap-4">
-                  <div v-for="s in portfolioData.skills.working" :key="s.name" class="p-3 border rounded bg-gray-50 flex items-center gap-3">
+                  <div
+                    v-for="s in portfolioData.skills.working"
+                    :key="s.name"
+                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
+                  >
                     <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
                     <div class="flex-1">
                       <div class="font-bold text-xs">{{ s.name }}</div>
-                      <div class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300">
+                      <div
+                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                      >
+                        <div class="h-full bg-green-500" :style="{ width: s.level }"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-8">
+                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">
+                  Working Knowledge
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                  <div
+                    v-for="s in portfolioData.skills.learning"
+                    :key="s.name"
+                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
+                  >
+                    <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
+                    <div class="flex-1">
+                      <div class="font-bold text-xs">{{ s.name }}</div>
+                      <div
+                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
+                      >
                         <div class="h-full bg-green-500" :style="{ width: s.level }"></div>
                       </div>
                     </div>
@@ -215,7 +297,12 @@ const win7Icons = {
     <Win7Taskbar @openStartMenu="toggleStartMenu">
       <template #apps>
         <div v-for="(win, id) in windows" :key="id">
-          <div v-if="win.isOpen" class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all" :class="{'bg-white/30 border-white/40 shadow-inner': win.zIndex === topZIndex}" @click="toggleWindow(id)">
+          <div
+            v-if="win.isOpen"
+            class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all"
+            :class="{ 'bg-white/30 border-white/40 shadow-inner': win.zIndex === topZIndex }"
+            @click="toggleWindow(id)"
+          >
             <span class="mr-2">{{ win7Icons[id as keyof typeof win7Icons] }}</span>
             <span class="text-white text-xs truncate capitalize">{{ id }}</span>
           </div>
@@ -227,7 +314,12 @@ const win7Icons = {
     <StartMenu
       :isOpen="isStartMenuOpen"
       @close="isStartMenuOpen = false"
-      @openFolder="(id) => { openWindow(id); isStartMenuOpen = false }"
+      @openFolder="
+        (id) => {
+          openWindow(id)
+          isStartMenuOpen = false
+        }
+      "
     />
   </div>
 </template>
