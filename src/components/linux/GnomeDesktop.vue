@@ -8,6 +8,8 @@ const {
   focusWindow,
   openWindow,
   closeWindow,
+  minimizeWindow,
+  maximizeWindow,
   handleDrag,
   handleResize
 } = useWindowManagement({
@@ -82,13 +84,14 @@ const selectWindow = (id: string) => {
     <!-- Windows (GNOME Adwaita Style) -->
     <div v-for="(win, id) in windows" :key="id">
       <div
-        v-if="win.isOpen"
+        v-if="win.isOpen && !win.isMinimized"
         class="absolute bg-[#fafafa] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden border border-black/10 text-gray-900 adwaita-window"
-        :style="{ left: win.x + 'px', top: win.y + 'px', width: win.width + 'px', height: win.height + 'px', zIndex: win.zIndex }"
+        :class="{ 'rounded-none border-none shadow-none': win.isMaximized }"
+        :style="win.isMaximized ? { left: '0', top: '28px', width: '100vw', height: 'calc(100vh - 28px)', zIndex: win.zIndex } : { left: win.x + 'px', top: win.y + 'px', width: win.width + 'px', height: win.height + 'px', zIndex: win.zIndex }"
         @mousedown="focusWindow(id)"
       >
         <!-- Resize Handles -->
-        <div class="absolute inset-0 pointer-events-none z-50">
+        <div v-if="!win.isMaximized" class="absolute inset-0 pointer-events-none z-50">
           <div class="absolute top-0 left-0 w-2 h-2 cursor-nw-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'nw')"></div>
           <div class="absolute top-0 right-0 w-2 h-2 cursor-ne-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'ne')"></div>
           <div class="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'sw')"></div>
@@ -108,6 +111,8 @@ const selectWindow = (id: string) => {
             <span>{{ id }}</span>
           </div>
           <div class="flex items-center space-x-1">
+             <div class="w-6 h-6 flex items-center justify-center hover:bg-black/5 rounded-full cursor-pointer transition-colors text-xl font-light text-gray-600 active:bg-black/10" @click.stop="minimizeWindow(id)">−</div>
+             <div class="w-6 h-6 flex items-center justify-center hover:bg-black/5 rounded-full cursor-pointer transition-colors text-lg font-light text-gray-600 active:bg-black/10" @click.stop="maximizeWindow(id)">□</div>
              <div class="w-6 h-6 flex items-center justify-center hover:bg-black/5 rounded-full cursor-pointer transition-colors text-xl font-light text-gray-600 active:bg-black/10" @click.stop="closeWindow(id)">×</div>
           </div>
         </div>

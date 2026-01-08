@@ -7,6 +7,8 @@ const {
   focusWindow,
   openWindow,
   closeWindow,
+  minimizeWindow,
+  maximizeWindow,
   handleDrag,
   handleResize
 } = useWindowManagement({
@@ -60,13 +62,14 @@ const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mo
     <!-- Windows -->
     <div v-for="(win, id) in windows" :key="id">
       <div
-        v-if="win.isOpen"
+        v-if="win.isOpen && !win.isMinimized"
         class="absolute bg-[#ececec] rounded-xl shadow-[0_35px_80px_-15px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden border border-white/50 glass-window-mac"
-        :style="{ left: win.x + 'px', top: win.y + 'px', width: win.width + 'px', height: win.height + 'px', zIndex: win.zIndex, pointerEvents: 'auto' }"
+        :class="{ 'rounded-none border-none shadow-none': win.isMaximized }"
+        :style="win.isMaximized ? { left: '0', top: '24px', width: '100vw', height: 'calc(100vh - 24px)', zIndex: win.zIndex, pointerEvents: 'auto' } : { left: win.x + 'px', top: win.y + 'px', width: win.width + 'px', height: win.height + 'px', zIndex: win.zIndex, pointerEvents: 'auto' }"
         @mousedown="focusWindow(id)"
       >
         <!-- Resize Handles -->
-        <div class="absolute inset-0 pointer-events-none z-[60]">
+        <div v-if="!win.isMaximized" class="absolute inset-0 pointer-events-none z-[60]">
           <div class="absolute top-0 left-0 w-2 h-2 cursor-nw-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'nw')"></div>
           <div class="absolute top-0 right-0 w-2 h-2 cursor-ne-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'ne')"></div>
           <div class="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize pointer-events-auto" @mousedown="handleResize(id, $event, 'sw')"></div>
@@ -84,8 +87,8 @@ const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mo
         >
           <div class="flex space-x-2.5 z-10 shrink-0">
             <div @click.stop="closeWindow(id)" class="w-3.5 h-3.5 rounded-full bg-[#ff5f57] border border-black/15 flex items-center justify-center text-[8px] hover:after:content-['×'] cursor-pointer transition-colors shadow-inner font-bold text-black/50"></div>
-            <div class="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] border border-black/15 flex items-center justify-center text-[8px] hover:after:content-['−'] cursor-pointer transition-colors shadow-inner font-bold text-black/50"></div>
-            <div class="w-3.5 h-3.5 rounded-full bg-[#28c840] border border-black/15 flex items-center justify-center text-[8px] hover:after:content-['+'] cursor-pointer transition-colors shadow-inner font-bold text-black/50"></div>
+            <div @click.stop="minimizeWindow(id)" class="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] border border-black/15 flex items-center justify-center text-[8px] hover:after:content-['−'] cursor-pointer transition-colors shadow-inner font-bold text-black/50"></div>
+            <div @click.stop="maximizeWindow(id)" class="w-3.5 h-3.5 rounded-full bg-[#28c840] border border-black/15 flex items-center justify-center text-[8px] hover:after:content-['+'] cursor-pointer transition-colors shadow-inner font-bold text-black/50"></div>
           </div>
           <div class="flex-1 text-center text-black/90 font-bold capitalize tracking-tight select-none truncate px-4">{{ id }}</div>
         </div>

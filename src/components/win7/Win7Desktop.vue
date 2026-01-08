@@ -16,6 +16,8 @@ const {
   focusWindow,
   openWindow,
   closeWindow,
+  minimizeWindow,
+  maximizeWindow,
   updateWindowPosition,
   updateWindowSize
 } = useWindowManagement({
@@ -73,11 +75,18 @@ const win7Icons = {
     <!-- Windows -->
     <template v-for="(win, id) in windows" :key="id">
       <AppWindow
-        v-if="win.isOpen"
+        v-if="win.isOpen && !win.isMinimized"
         :title="id === 'profile' ? 'My Profile' : id === 'projects' ? 'Projects' : id === 'experience' ? 'Work Experience' : 'Programming Skills'"
         :isActive="win.zIndex === topZIndex"
-        :isMaximized="false"
-        :style="{
+        :isMaximized="win.isMaximized"
+        :style="win.isMaximized ? {
+          left: '0',
+          top: '0',
+          width: '100vw',
+          height: 'calc(100vh - 40px)',
+          zIndex: win.zIndex,
+          position: 'absolute'
+        } : {
           left: win.x + 'px',
           top: win.y + 'px',
           width: win.width + 'px',
@@ -86,6 +95,8 @@ const win7Icons = {
           position: 'absolute'
         }"
         @close="closeWindow(id)"
+        @minimize="minimizeWindow(id)"
+        @maximize="maximizeWindow(id)"
         @focus="focusWindow(id)"
         @move="(e: any) => updateWindowPosition(id, e)"
         @resize="(e: any) => updateWindowSize(id, e)"

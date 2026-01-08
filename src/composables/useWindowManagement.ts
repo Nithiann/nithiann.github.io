@@ -8,6 +8,8 @@ export interface WindowState {
   width: number
   height: number
   isMaximized?: boolean
+  isMinimized?: boolean
+  prevSize?: { x: number; y: number; width: number; height: number }
 }
 
 export function useWindowManagement(initialWindows: Record<string, WindowState>) {
@@ -16,6 +18,9 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
 
   const focusWindow = (id: string) => {
     if (!windows.value[id]) return
+    if (windows.value[id].isMinimized) {
+        windows.value[id].isMinimized = false
+    }
     topZIndex.value += 1
     windows.value[id].zIndex = topZIndex.value
   }
@@ -31,9 +36,32 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     windows.value[id].isOpen = false
   }
 
-  const handleDrag = (id: string, e: MouseEvent) => {
+  const minimizeWindow = (id: string) => {
+    if (!windows.value[id]) return
+    windows.value[id].isMinimized = true
+  }
+
+  const maximizeWindow = (id: string) => {
     const win = windows.value[id]
     if (!win) return
+
+    if (win.isMaximized) {
+      if (win.prevSize) {
+        win.x = win.prevSize.x
+        win.y = win.prevSize.y
+        win.width = win.prevSize.width
+        win.height = win.prevSize.height
+      }
+      win.isMaximized = false
+    } else {
+      win.prevSize = { x: win.x, y: win.y, width: win.width, height: win.height }
+      win.isMaximized = true
+    }
+  }
+
+  const handleDrag = (id: string, e: MouseEvent) => {
+    const win = windows.value[id]
+    if (!win || win.isMaximized) return
     const startX = e.clientX
     const startY = e.clientY
     const initialX = win.x
@@ -56,7 +84,7 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
   const handleResize = (id: string, e: MouseEvent, direction: string) => {
     e.stopPropagation()
     const win = windows.value[id]
-    if (!win) return
+    if (!win || win.isMaximized) return
     const startX = e.clientX
     const startY = e.clientY
     const startWidth = win.width
@@ -95,16 +123,19 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     window.addEventListener('mouseup', onMouseUp)
   }
 
-  const updateWindowPosition = (id: string, { dx, dy }: { dx: number, dy: number }) => {
+  const updateWindowPosition = (id: string, { dx, dy }: { dx: number; dy: number }) => {
     const win = windows.value[id]
-    if (!win) return
+    if (!win || win.isMaximized) return
     win.x += dx
     win.y += dy
   }
 
-  const updateWindowSize = (id: string, { dx, dy, dw, dh }: { dx: number, dy: number, dw: number, dh: number }) => {
+  const updateWindowSize = (
+    id: string,
+    { dx, dy, dw, dh }: { dx: number; dy: number; dw: number; dh: number }
+  ) => {
     const win = windows.value[id]
-    if (!win) return
+    if (!win || win.isMaximized) return
 
     // Position updates
     win.x += dx
@@ -119,7 +150,7 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     } else {
       // If we hit minimum width, we need to adjust X if we were resizing from the west
       if (dx !== 0) {
-        win.x -= (200 - nextWidth)
+        win.x -= 200 - nextWidth
       }
       win.width = 200
     }
@@ -129,7 +160,7 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     } else {
       // If we hit minimum height, we need to adjust Y if we were resizing from the north
       if (dy !== 0) {
-        win.y -= (150 - nextHeight)
+        win.y -= 150 - nextHeight
       }
       win.height = 150
     }
@@ -141,6 +172,8 @@ export function useWindowManagement(initialWindows: Record<string, WindowState>)
     focusWindow,
     openWindow,
     closeWindow,
+    minimizeWindow,
+    maximizeWindow,
     handleDrag,
     handleResize,
     updateWindowPosition,
