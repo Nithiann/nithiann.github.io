@@ -55,6 +55,13 @@ export const portfolioData = {
       url: '#',
       tech: 'Flutter',
     },
+    {
+      title: 'VOSStab',
+      description: 'A new tab extension for Mozilla Firefox',
+      icon: 'https://img.icons8.com/ios/96/puzzle.png',
+      url: 'https://github.com/Nithiann/VOSStab',
+      tech: 'Vue 3, Vite & Tailwind CSS',
+    },
   ],
   experience: [
     {
