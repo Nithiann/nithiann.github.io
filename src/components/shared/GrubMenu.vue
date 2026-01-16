@@ -4,9 +4,24 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const emit = defineEmits(['select'])
 
 const options = [
-  { id: 'win7', name: 'Windows 7', detail: '(loader on /dev/sda1)', icon: 'https://img.icons8.com/color/48/windows-10.png' },
-  { id: 'macos', name: 'MacOS (Mojave)', detail: '(loader on /dev/sda2)', icon: 'https://img.icons8.com/color/48/mac-os.png' },
-  { id: 'linux', name: 'Linux (GNOME)', detail: '(loader on /dev/sda3)', icon: 'https://img.icons8.com/color/48/linux.png' },
+  {
+    id: 'win7',
+    name: 'Windows 7',
+    detail: '(loader on /dev/sda1)',
+    icon: 'https://img.icons8.com/color/48/windows-10.png',
+  },
+  {
+    id: 'macos',
+    name: 'MacOS (Mojave)',
+    detail: '(loader on /dev/sda2)',
+    icon: 'https://img.icons8.com/color/48/mac-os.png',
+  },
+  {
+    id: 'linux',
+    name: 'Linux (GNOME)',
+    detail: '(loader on /dev/sda3)',
+    icon: 'https://img.icons8.com/color/48/linux.png',
+  },
 ]
 
 const selectedIndex = ref(0)
@@ -56,17 +71,21 @@ onUnmounted(() => {
     <div
       class="max-w-4xl mx-auto w-full border-2 border-white p-4 md:p-4 flex-1 flex flex-col bg-black overflow-y-auto"
     >
-      <h1 class="text-center mb-6 md:mb-8 border-b border-white pb-4 md:pb-4 text-xs md:text-base opacity-80 uppercase tracking-widest">
+      <h1
+        class="text-center mb-6 md:mb-8 border-b border-white pb-4 md:pb-4 text-xs md:text-base opacity-80 uppercase tracking-widest"
+      >
         GNU GRUB version 1.99-21BasVoss3.1
       </h1>
 
-      <p class="mb-8 text-[11px] md:text-sm leading-relaxed text-center md:text-left opacity-90 hidden md:block">
+      <p
+        class="mb-4 text-[11px] md:text-sm leading-relaxed text-center md:text-left opacity-90 hidden md:block"
+      >
         Use the ↑ and ↓ keys to select which entry is highlighted.<br />
         Press enter to boot the selected OS, 'e' to edit the commands before booting or 'c' for a
         command-line.
       </p>
 
-      <div class="flex-1 flex flex-col justify-center space-y-4 md:space-y-1">
+      <div class="flex-1 flex flex-col justify-center md:justify-start space-y-4 md:space-y-1">
         <div
           v-for="(opt, index) in options"
           :key="opt.id"
@@ -74,26 +93,35 @@ onUnmounted(() => {
           :class="[
             selectedIndex === index
               ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] md:shadow-none font-bold'
-              : 'hover:border-white/20'
+              : 'hover:border-white/20',
           ]"
           @mouseenter="selectedIndex = index"
           @click="selectOS(index)"
         >
-          <img :src="opt.icon" class="mr-4 w-8 h-8 md:w-5 md:h-5 object-contain" />
+          <img :src="opt.icon" class="md:hidden mr-4 w-8 h-8 md:w-5 md:h-5 object-contain" />
           <div class="flex flex-col md:flex-row md:items-center">
-            <span class="font-bold tracking-tight md:mr-2">{{ opt.name }}</span>
-            <span class="text-[10px] md:text-xs opacity-60 md:opacity-80 font-normal">{{ opt.detail }}</span>
+            <span class="font-bold md:font-normal tracking-tight md:mr-2">{{ opt.name }}</span>
+            <span class="text-[10px] md:text-sm opacity-60 md:opacity-100 font-normal">{{
+              opt.detail
+            }}</span>
           </div>
           <span v-if="selectedIndex === index" class="ml-auto text-xl md:hidden">⏎</span>
         </div>
       </div>
 
-      <div class="mt-8 md:mt-8 text-[11px] md:text-sm text-center md:text-left border-t border-white/20 pt-4 md:border-0 md:pt-0">
-        <p class="opacity-80">The highlighted entry will be executed automatically in <span class="font-bold text-lg md:text-sm">{{ countdown }}s</span>.</p>
+      <div
+        class="mt-8 md:mt-8 text-[11px] md:text-sm text-center md:text-left border-t border-white/20 pt-4 md:border-0 md:pt-0"
+      >
+        <p class="opacity-80">
+          The highlighted entry will be executed automatically in
+          <span class="font-bold text-lg md:text-sm">{{ countdown }}s</span>.
+        </p>
       </div>
     </div>
 
-    <div class="max-w-4xl mx-auto w-full mt-4 md:mt-4 text-[11px] text-white/40 flex justify-between items-center">
+    <div
+      class="max-w-4xl mx-auto w-full mt-4 md:mt-4 text-[11px] text-white/40 flex justify-between items-center"
+    >
       <span>GRUB _</span>
       <span class="md:hidden text-[9px] uppercase tracking-tighter opacity-50">v2.06.release</span>
     </div>
