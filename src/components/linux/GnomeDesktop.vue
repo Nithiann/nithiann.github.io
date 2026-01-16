@@ -7,6 +7,8 @@ import ProfileApp from '../shared/apps/ProfileApp.vue'
 import ProjectsApp from '../shared/apps/ProjectsApp.vue'
 import ExperienceApp from '../shared/apps/ExperienceApp.vue'
 import SkillsApp from '../shared/apps/SkillsApp.vue'
+import CalculatorApp from '../shared/apps/CalculatorApp.vue'
+import NotesApp from '../shared/apps/NotesApp.vue'
 
 const {
   windows,
@@ -22,6 +24,8 @@ const {
   projects: { isOpen: false, zIndex: 10, x: 150, y: 120, width: 800, height: 600 },
   experience: { isOpen: false, zIndex: 10, x: 200, y: 160, width: 800, height: 600 },
   skills: { isOpen: false, zIndex: 10, x: 250, y: 200, width: 800, height: 600 },
+  calculator: { isOpen: false, zIndex: 10, x: 300, y: 100, width: 320, height: 480 },
+  notes: { isOpen: false, zIndex: 10, x: 350, y: 150, width: 600, height: 500 },
 })
 
 const showActivities = ref(false)
@@ -61,13 +65,15 @@ const selectWindow = (id: string) => {
     <!-- Activities Overlay -->
     <Transition name="fade">
       <div v-if="showActivities" class="absolute inset-0 bg-[#242424]/90 backdrop-blur-md z-[9000] flex items-center justify-center pt-7">
-         <div class="grid grid-cols-4 gap-12 max-w-5xl font-bold">
-            <div v-for="item in ['profile', 'projects', 'experience', 'skills']" :key="item" class="flex flex-col items-center hover:bg-white/5 p-6 rounded-2xl cursor-pointer transition-all hover:scale-105 active:scale-95 font-bold" @click="selectWindow(item)">
+         <div class="grid grid-cols-6 gap-8 max-w-5xl font-bold text-center items-start">
+            <div v-for="item in ['profile', 'projects', 'experience', 'skills', 'calculator', 'notes']" :key="item" class="flex flex-col items-center hover:bg-white/5 p-6 rounded-2xl cursor-pointer transition-all hover:scale-105 active:scale-95 font-bold" @click="selectWindow(item)">
               <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-4 p-2 shadow-xl border border-white/5 font-bold">
                 <img v-if="item === 'profile'" src="https://img.icons8.com/color/96/user-male-circle.png" class="w-full h-full font-bold" />
                 <img v-else-if="item === 'projects'" src="https://img.icons8.com/color/96/folder-invoices.png" class="w-full h-full font-bold" />
                 <img v-else-if="item === 'experience'" src="https://img.icons8.com/color/96/briefcase.png" class="w-full h-full font-bold" />
                 <img v-else-if="item === 'skills'" src="https://img.icons8.com/color/96/code.png" class="w-full h-full font-bold" />
+                <img v-else-if="item === 'calculator'" src="https://img.icons8.com/color/96/calculator.png" class="w-full h-full font-bold" />
+                <img v-else-if="item === 'notes'" src="https://img.icons8.com/color/96/notepad.png" class="w-full h-full font-bold" />
               </div>
               <span class="text-xs font-semibold capitalize tracking-wide font-bold">{{ item }}</span>
             </div>
@@ -75,11 +81,13 @@ const selectWindow = (id: string) => {
 
          <!-- Dock -->
          <div class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-xl p-3 rounded-[24px] flex flex-col space-y-4 shadow-2xl border border-white/10 transition-transform duration-300 translate-x-0 font-bold">
-            <div v-for="item in ['profile', 'projects', 'experience', 'skills']" :key="item" class="w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-xl cursor-pointer group relative transition-colors font-bold" @click="selectWindow(item)">
+            <div v-for="item in ['profile', 'projects', 'experience', 'skills', 'calculator', 'notes']" :key="item" class="w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-xl cursor-pointer group relative transition-colors font-bold" @click="selectWindow(item)">
                <img v-if="item === 'profile'" src="https://img.icons8.com/color/48/user-male-circle.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
                <img v-else-if="item === 'projects'" src="https://img.icons8.com/color/48/folder-invoices.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
                <img v-else-if="item === 'experience'" src="https://img.icons8.com/color/48/briefcase.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
                <img v-else-if="item === 'skills'" src="https://img.icons8.com/color/48/code.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
+               <img v-else-if="item === 'calculator'" src="https://img.icons8.com/color/48/calculator.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
+               <img v-else-if="item === 'notes'" src="https://img.icons8.com/color/48/notepad.png" class="w-8 h-8 opacity-80 group-hover:opacity-100 font-bold" />
                <div v-if="windows[item]?.isOpen" class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-3 bg-white rounded-r-[1px] shadow-sm font-bold"></div>
             </div>
          </div>
@@ -127,6 +135,8 @@ const selectWindow = (id: string) => {
           <ProjectsApp v-else-if="id === 'projects'" os="linux" />
           <ExperienceApp v-else-if="id === 'experience'" os="linux" />
           <SkillsApp v-else-if="id === 'skills'" os="linux" />
+          <CalculatorApp v-else-if="id === 'calculator'" os="linux" />
+          <NotesApp v-else-if="id === 'notes'" os="linux" />
         </div>
       </div>
     </div>

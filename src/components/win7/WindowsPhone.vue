@@ -6,6 +6,8 @@ import ProfileApp from '../shared/apps/ProfileApp.vue'
 import ProjectsApp from '../shared/apps/ProjectsApp.vue'
 import ExperienceApp from '../shared/apps/ExperienceApp.vue'
 import SkillsApp from '../shared/apps/SkillsApp.vue'
+import CalculatorApp from '../shared/apps/CalculatorApp.vue'
+import NotesApp from '../shared/apps/NotesApp.vue'
 
 const tiles = [
   { id: 'profile', name: 'Profile', color: 'bg-[#00a1f1]', icon: '👤', size: 'medium' },
@@ -13,6 +15,8 @@ const tiles = [
   { id: 'experience', name: 'Experience', color: 'bg-[#00a1f1]', icon: '⏳', size: 'small' },
   { id: 'skills', name: 'Skills', color: 'bg-[#00a1f1]', icon: '🛠️', size: 'small' },
   { id: 'phone', name: 'Phone', color: 'bg-[#00a1f1]', icon: '📞', size: 'small' },
+  { id: 'calculator', name: 'Calculator', color: 'bg-[#00a1f1]', icon: '🧮', size: 'small' },
+  { id: 'notes', name: 'Notes', color: 'bg-[#00a1f1]', icon: '📝', size: 'small' },
   { id: 'messages', name: 'Messages', color: 'bg-[#00a1f1]', icon: '✉️', size: 'small' },
   { id: 'photos', name: 'Photos', color: 'bg-[#00a1f1]', icon: '🖼️', size: 'medium' },
   { id: 'store', name: 'Store', color: 'bg-[#00a1f1]', icon: '🛍️', size: 'small' },
@@ -22,7 +26,7 @@ const tiles = [
 const activeApp = ref<string | null>(null)
 
 const openApp = (id: string) => {
-  if (['profile', 'projects', 'experience', 'skills'].includes(id)) {
+  if (['profile', 'projects', 'experience', 'skills', 'calculator', 'notes'].includes(id)) {
     activeApp.value = id
   }
 }
@@ -93,6 +97,8 @@ setInterval(() => {
       <ProjectsApp v-else-if="activeApp === 'projects'" os="wp" />
       <ExperienceApp v-else-if="activeApp === 'experience'" os="wp" />
       <SkillsApp v-else-if="activeApp === 'skills'" os="wp" />
+      <CalculatorApp v-else-if="activeApp === 'calculator'" os="wp" />
+      <NotesApp v-else-if="activeApp === 'notes'" os="wp" />
     </div>
 
     <!-- Bottom Navigation -->

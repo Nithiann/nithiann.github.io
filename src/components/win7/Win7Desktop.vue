@@ -14,6 +14,8 @@ import ProfileApp from '../shared/apps/ProfileApp.vue'
 import ProjectsApp from '../shared/apps/ProjectsApp.vue'
 import ExperienceApp from '../shared/apps/ExperienceApp.vue'
 import SkillsApp from '../shared/apps/SkillsApp.vue'
+import CalculatorApp from '../shared/apps/CalculatorApp.vue'
+import NotesApp from '../shared/apps/NotesApp.vue'
 
 const {
   windows,
@@ -30,6 +32,8 @@ const {
   projects: { isOpen: false, zIndex: 10, x: 150, y: 100, width: 700, height: 500 },
   experience: { isOpen: false, zIndex: 10, x: 200, y: 150, width: 600, height: 500 },
   skills: { isOpen: false, zIndex: 10, x: 250, y: 200, width: 600, height: 450 },
+  calculator: { isOpen: false, zIndex: 10, x: 300, y: 100, width: 320, height: 480 },
+  notes: { isOpen: false, zIndex: 10, x: 350, y: 150, width: 500, height: 400 },
 })
 
 const isStartMenuOpen = ref(false)
@@ -50,6 +54,8 @@ const win7Icons = {
   projects: '📁',
   experience: '💼',
   skills: '💻',
+  calculator: '🧮',
+  notes: '📝',
 }
 </script>
 
@@ -80,6 +86,16 @@ const win7Icons = {
         icon="https://img.icons8.com/color/96/code.png"
         @open="openWindow('skills')"
       />
+      <DesktopIcon
+        label="Calculator"
+        icon="https://img.icons8.com/color/96/calculator.png"
+        @open="openWindow('calculator')"
+      />
+      <DesktopIcon
+        label="Notepad"
+        icon="https://img.icons8.com/color/96/notepad.png"
+        @open="openWindow('notes')"
+      />
     </div>
 
     <!-- Windows -->
@@ -93,7 +109,11 @@ const win7Icons = {
               ? 'Projects'
               : id === 'experience'
                 ? 'Work Experience'
-                : 'Programming Skills'
+              : id === 'skills'
+                ? 'Programming Skills'
+                : id === 'calculator'
+                  ? 'Calculator'
+                  : 'Notepad'
         "
         :isActive="win.zIndex === topZIndex"
         :isMaximized="win.isMaximized"
@@ -128,6 +148,7 @@ const win7Icons = {
         >
 
         <ExplorerShell
+          v-if="id !== 'calculator' && id !== 'notes'"
           :title="id === 'profile' ? 'My Profile' : id === 'projects' ? 'Projects' : id === 'experience' ? 'Work Experience' : 'Programming Skills'"
           :path="id === 'profile' ? 'C:\\Users\\Bas\\Documents' : id === 'projects' ? 'C:\\Users\\Bas\\Projects' : id === 'experience' ? 'C:\\Users\\Bas\\Documents\\Career' : 'C:\\Windows\\System32'"
           class="h-full"
@@ -137,6 +158,10 @@ const win7Icons = {
           <ExperienceApp v-else-if="id === 'experience'" os="win7" />
           <SkillsApp v-else-if="id === 'skills'" os="win7" />
         </ExplorerShell>
+        <template v-else>
+          <CalculatorApp v-if="id === 'calculator'" os="win7" />
+          <NotesApp v-else-if="id === 'notes'" os="win7" />
+        </template>
       </AppWindow>
     </template>
 

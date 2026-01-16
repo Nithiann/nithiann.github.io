@@ -6,6 +6,8 @@ import ProfileApp from '../shared/apps/ProfileApp.vue'
 import ProjectsApp from '../shared/apps/ProjectsApp.vue'
 import ExperienceApp from '../shared/apps/ExperienceApp.vue'
 import SkillsApp from '../shared/apps/SkillsApp.vue'
+import CalculatorApp from '../shared/apps/CalculatorApp.vue'
+import NotesApp from '../shared/apps/NotesApp.vue'
 
 const apps = [
   { id: 'profile', name: 'Profile', icon: '👤', color: 'bg-[#d3e3fd]' },
@@ -13,6 +15,8 @@ const apps = [
   { id: 'experience', name: 'Experience', icon: '💼', color: 'bg-[#c2e7ff]' },
   { id: 'skills', name: 'Skills', icon: '🛠️', color: 'bg-[#e7e0eb]' },
   { id: 'gmail', name: 'Gmail', icon: '📧', color: 'bg-[#f2f2f2]' },
+  { id: 'calculator', name: 'Calculator', icon: '🧮', color: 'bg-[#fef7da]' },
+  { id: 'notes', name: 'Keep Notes', icon: '📝', color: 'bg-[#eaddff]' },
   { id: 'maps', name: 'Maps', icon: '📍', color: 'bg-[#f2f2f2]' },
   { id: 'photos', name: 'Photos', icon: '🎡', color: 'bg-[#f2f2f2]' },
   { id: 'chrome', name: 'Chrome', icon: '🌐', color: 'bg-[#f2f2f2]' },
@@ -23,7 +27,7 @@ const apps = [
 const activeApp = ref<string | null>(null)
 
 const openApp = (id: string) => {
-  if (['profile', 'projects', 'experience', 'skills'].includes(id)) {
+  if (['profile', 'projects', 'experience', 'skills', 'calculator', 'notes'].includes(id)) {
     activeApp.value = id
   }
 }
@@ -108,6 +112,8 @@ setInterval(() => {
         <ProjectsApp v-else-if="activeApp === 'projects'" os="android" />
         <ExperienceApp v-else-if="activeApp === 'experience'" os="android" />
         <SkillsApp v-else-if="activeApp === 'skills'" os="android" />
+        <CalculatorApp v-else-if="activeApp === 'calculator'" os="android" />
+        <NotesApp v-else-if="activeApp === 'notes'" os="android" />
       </div>
     </div>
 

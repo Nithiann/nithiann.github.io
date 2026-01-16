@@ -6,6 +6,8 @@ import ProfileApp from '../shared/apps/ProfileApp.vue'
 import ProjectsApp from '../shared/apps/ProjectsApp.vue'
 import ExperienceApp from '../shared/apps/ExperienceApp.vue'
 import SkillsApp from '../shared/apps/SkillsApp.vue'
+import CalculatorApp from '../shared/apps/CalculatorApp.vue'
+import NotesApp from '../shared/apps/NotesApp.vue'
 
 const {
   windows,
@@ -21,6 +23,8 @@ const {
   projects: { isOpen: false, zIndex: 10, x: 150, y: 120, width: 800, height: 600 },
   experience: { isOpen: false, zIndex: 10, x: 200, y: 160, width: 800, height: 600 },
   skills: { isOpen: false, zIndex: 10, x: 250, y: 200, width: 800, height: 600 },
+  calculator: { isOpen: false, zIndex: 10, x: 300, y: 100, width: 320, height: 480 },
+  notes: { isOpen: false, zIndex: 10, x: 350, y: 150, width: 600, height: 500 },
 })
 
 const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mojave.jpg"
@@ -103,13 +107,15 @@ const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mo
           <ProjectsApp v-else-if="id === 'projects'" os="macos" />
           <ExperienceApp v-else-if="id === 'experience'" os="macos" />
           <SkillsApp v-else-if="id === 'skills'" os="macos" />
+          <CalculatorApp v-else-if="id === 'calculator'" os="macos" />
+          <NotesApp v-else-if="id === 'notes'" os="macos" />
         </div>
       </div>
     </div>
 
     <!-- Dock -->
     <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-end space-x-2.5 px-5 py-2.5 bg-white/20 backdrop-blur-3xl border border-white/30 rounded-[28px] shadow-[0_25px_50px_rgba(0,0,0,0.4)] z-[10000]">
-      <div v-for="item in ['profile', 'projects', 'experience', 'skills']"
+      <div v-for="item in ['profile', 'projects', 'experience', 'skills', 'calculator', 'notes']"
            :key="item"
            class="group relative transition-all duration-300 hover:scale-140 hover:-translate-y-8 cursor-pointer flex flex-col items-center"
            @click="openWindow(item)"
@@ -122,6 +128,8 @@ const wallpaper = "https://eshop.macsales.com/blog/wp-content/uploads/2018/06/Mo
           <img v-else-if="item === 'projects'" src="https://img.icons8.com/color/96/opened-folder.png" class="w-full h-full drop-shadow-xl" />
           <img v-else-if="item === 'experience'" src="https://img.icons8.com/color/96/briefcase.png" class="w-full h-full drop-shadow-xl" />
           <img v-else-if="item === 'skills'" src="https://img.icons8.com/color/96/code.png" class="w-full h-full drop-shadow-xl" />
+          <img v-else-if="item === 'calculator'" src="https://img.icons8.com/color/96/calculator.png" class="w-full h-full drop-shadow-xl" />
+          <img v-else-if="item === 'notes'" src="https://img.icons8.com/color/96/notepad.png" class="w-full h-full drop-shadow-xl" />
         </div>
 
         <div v-if="windows[item]?.isOpen" class="w-1.5 h-1.5 bg-black/80 rounded-full shadow-inner mt-1.5 font-bold"></div>
