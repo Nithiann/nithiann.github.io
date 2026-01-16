@@ -50,18 +50,27 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-[#0000aa] text-white font-mono flex flex-col p-8 z-[20000] select-none">
-    <div class="max-w-4xl mx-auto w-full border-2 border-white p-4 flex-1 flex flex-col bg-black">
-      <h1 class="text-center mb-8 border-b border-white pb-4">GNU GRUB  version 1.99-21BasVoss3.1</h1>
+  <div
+    class="fixed inset-0 bg-[#0000aa] text-white font-mono flex flex-col p-4 md:p-8 z-[20000] select-none"
+  >
+    <div
+      class="max-w-4xl mx-auto w-full border-2 border-white p-2 md:p-4 flex-1 flex flex-col bg-black overflow-y-auto"
+    >
+      <h1 class="text-center mb-4 md:mb-8 border-b border-white pb-2 md:pb-4 text-sm md:text-base">
+        GNU GRUB version 1.99-21BasVoss3.1
+      </h1>
 
-      <p class="mb-4 text-sm">Use the ↑ and ↓ keys to select which entry is highlighted.<br>
-      Press enter to boot the selected OS, 'e' to edit the commands before booting or 'c' for a command-line.</p>
+      <p class="mb-4 text-[10px] md:text-sm">
+        Use the ↑ and ↓ keys to select which entry is highlighted.<br />
+        Press enter to boot the selected OS, 'e' to edit the commands before booting or 'c' for a
+        command-line.
+      </p>
 
-      <div class="border-2 border-white flex-1 p-2 space-y-1">
+      <div class="border-2 border-white flex-1 p-1 md:p-2 space-y-1">
         <div
           v-for="(opt, index) in options"
           :key="opt.id"
-          class="px-2 py-1 cursor-pointer"
+          class="px-2 py-2 md:py-1 cursor-pointer text-xs md:text-base active:bg-white active:text-black transition-colors"
           :class="{ 'bg-white text-black': selectedIndex === index }"
           @mouseenter="selectedIndex = index"
           @click="selectOS(index)"
@@ -70,14 +79,12 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="mt-8 text-sm">
+      <div class="mt-4 md:mt-8 text-[10px] md:text-sm">
         <p>The highlighted entry will be executed automatically in {{ countdown }}s.</p>
       </div>
     </div>
 
-    <div class="max-w-4xl mx-auto w-full mt-4 text-[10px] text-gray-400">
-      GRUB _
-    </div>
+    <div class="max-w-4xl mx-auto w-full mt-2 md:mt-4 text-[10px] text-gray-400">GRUB _</div>
   </div>
 </template>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useWindowManagement } from '../../composables/useWindowManagement'
-import { portfolioData } from '../../data/portfolio'
 
 // Shared Components
 import DesktopIcon from '../shared/DesktopIcon.vue'
@@ -9,6 +8,12 @@ import ExplorerShell from '../shared/ExplorerShell.vue'
 import Win7Taskbar from './Win7Taskbar.vue'
 import AppWindow from '../shared/AppWindow.vue'
 import StartMenu from './StartMenu.vue'
+
+// Shared App Components
+import ProfileApp from '../shared/apps/ProfileApp.vue'
+import ProjectsApp from '../shared/apps/ProjectsApp.vue'
+import ExperienceApp from '../shared/apps/ExperienceApp.vue'
+import SkillsApp from '../shared/apps/SkillsApp.vue'
 
 const {
   windows,
@@ -54,7 +59,7 @@ const win7Icons = {
     :style="{ backgroundImage: wallpaperUrl }"
   >
     <!-- Desktop Icons -->
-    <div class="p-4 grid grid-flow-col grid-rows-10 w-fit gap-2">
+    <div class="p-4 grid grid-flow-col grid-rows-10 w-fit gap-2 font-bold">
       <DesktopIcon
         label="My Profile"
         icon="https://img.icons8.com/color/96/my-computer.png"
@@ -119,177 +124,19 @@ const win7Icons = {
         @resize="(e: any) => updateWindowSize(id, e)"
       >
         <template #icon
-          ><span class="text-lg">{{ win7Icons[id as keyof typeof win7Icons] }}</span></template
+          ><span class="text-lg font-bold">{{ win7Icons[id as keyof typeof win7Icons] }}</span></template
         >
 
-        <!-- Profile Content -->
-        <div v-if="id === 'profile'" class="h-full">
-          <ExplorerShell title="My Profile" path="C:\Users\Bas\Documents" class="h-full">
-            <div
-              class="max-w-3xl mx-auto border shadow-sm p-8 bg-white font-serif text-gray-900 overflow-auto h-full"
-            >
-              <h1
-                class="text-3xl font-bold border-b-2 border-gray-800 pb-2 mb-6 uppercase tracking-tighter"
-              >
-                Curriculum Vitae
-              </h1>
-
-              <section class="mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
-                  Personal Information
-                </h2>
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                  <div><strong>Name:</strong> {{ portfolioData.personal.name }}</div>
-                  <div><strong>Location:</strong> {{ portfolioData.personal.location }}</div>
-                  <div><strong>Role:</strong> {{ portfolioData.personal.role }}</div>
-                  <div><strong>Contact:</strong> {{ portfolioData.personal.contact }}</div>
-                </div>
-              </section>
-
-              <section class="mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
-                  Summary
-                </h2>
-                <p class="text-sm leading-relaxed">{{ portfolioData.personal.summary }}</p>
-              </section>
-
-              <section>
-                <h2 class="text-xl font-bold uppercase tracking-widest text-blue-800 border-b mb-3">
-                  Education
-                </h2>
-                <div
-                  v-for="edu in portfolioData.personal.education"
-                  :key="edu.degree"
-                  class="text-sm mb-2"
-                >
-                  <p class="font-bold">{{ edu.degree }}</p>
-                  <p class="text-gray-600 italic">{{ edu.period }}</p>
-                </div>
-              </section>
-            </div>
-          </ExplorerShell>
-        </div>
-
-        <!-- Projects Content -->
-        <div v-else-if="id === 'projects'" class="h-full">
-          <ExplorerShell title="Projects" path="C:\Users\Bas\Projects" class="h-full">
-            <div class="grid grid-cols-3 gap-6 p-6 overflow-auto h-full text-black">
-              <a
-                v-for="p in portfolioData.projects"
-                :key="p.title"
-                :href="p.url"
-                target="_blank"
-                class="flex flex-col items-center p-4 rounded hover:bg-blue-50 border border-transparent hover:border-blue-200 cursor-pointer transition-all"
-              >
-                <img :src="p.icon" class="w-16 h-16 mb-2" />
-                <span class="text-sm font-semibold">{{ p.title }}</span>
-                <span class="text-xs text-gray-500">{{ p.tech }}</span>
-              </a>
-            </div>
-          </ExplorerShell>
-        </div>
-
-        <!-- Experience Content -->
-        <div v-else-if="id === 'experience'" class="h-full">
-          <ExplorerShell
-            title="Work Experience"
-            path="C:\Users\Bas\Documents\Career"
-            class="h-full"
-          >
-            <div class="space-y-8 p-8 overflow-auto h-full text-black">
-              <div
-                v-for="exp in portfolioData.experience"
-                :key="exp.period"
-                class="relative pl-6 border-l-2 border-blue-500"
-              >
-                <div
-                  class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"
-                ></div>
-                <div class="bg-gray-50 p-4 rounded shadow-sm">
-                  <h3 class="font-bold text-blue-700">{{ exp.role }} @ {{ exp.company }}</h3>
-                  <p class="text-xs text-gray-500 mb-2">{{ exp.period }} | {{ exp.location }}</p>
-                  <ul class="text-sm space-y-2 list-disc ml-4 text-gray-700">
-                    <li v-for="desc in exp.description" :key="desc">{{ desc }}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </ExplorerShell>
-        </div>
-
-        <!-- Skills Content -->
-        <div v-else-if="id === 'skills'" class="h-full">
-          <ExplorerShell title="Programming Skills" path="C:\Windows\System32" class="h-full">
-            <div class="p-8 overflow-auto h-full text-black">
-              <div class="mb-8">
-                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">Expertise</h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div
-                    v-for="s in portfolioData.skills.expertise"
-                    :key="s.name"
-                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
-                  >
-                    <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
-                    <div class="flex-1">
-                      <div class="font-bold text-xs">{{ s.name }}</div>
-                      <div
-                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
-                      >
-                        <div class="h-full bg-blue-500" :style="{ width: s.level }"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-8">
-                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">
-                  Working Knowledge
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div
-                    v-for="s in portfolioData.skills.working"
-                    :key="s.name"
-                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
-                  >
-                    <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
-                    <div class="flex-1">
-                      <div class="font-bold text-xs">{{ s.name }}</div>
-                      <div
-                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
-                      >
-                        <div class="h-full bg-green-500" :style="{ width: s.level }"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-8">
-                <h3 class="text-sm font-bold border-b mb-4 uppercase text-gray-500">
-                  Working Knowledge
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div
-                    v-for="s in portfolioData.skills.learning"
-                    :key="s.name"
-                    class="p-3 border rounded bg-gray-50 flex items-center gap-3"
-                  >
-                    <img :src="`https://img.icons8.com/color/48/${s.icon}.png`" class="w-8 h-8" />
-                    <div class="flex-1">
-                      <div class="font-bold text-xs">{{ s.name }}</div>
-                      <div
-                        class="w-full h-1.5 bg-gray-200 rounded mt-1 overflow-hidden border border-gray-300"
-                      >
-                        <div class="h-full bg-green-500" :style="{ width: s.level }"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ExplorerShell>
-        </div>
+        <ExplorerShell
+          :title="id === 'profile' ? 'My Profile' : id === 'projects' ? 'Projects' : id === 'experience' ? 'Work Experience' : 'Programming Skills'"
+          :path="id === 'profile' ? 'C:\\Users\\Bas\\Documents' : id === 'projects' ? 'C:\\Users\\Bas\\Projects' : id === 'experience' ? 'C:\\Users\\Bas\\Documents\\Career' : 'C:\\Windows\\System32'"
+          class="h-full"
+        >
+          <ProfileApp v-if="id === 'profile'" os="win7" />
+          <ProjectsApp v-else-if="id === 'projects'" os="win7" />
+          <ExperienceApp v-else-if="id === 'experience'" os="win7" />
+          <SkillsApp v-else-if="id === 'skills'" os="win7" />
+        </ExplorerShell>
       </AppWindow>
     </template>
 
@@ -299,12 +146,12 @@ const win7Icons = {
         <div v-for="(win, id) in windows" :key="id">
           <div
             v-if="win.isOpen"
-            class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all"
+            class="h-8 px-3 rounded flex items-center bg-white/10 border border-white/20 hover:bg-white/20 cursor-pointer min-w-[120px] transition-all font-bold"
             :class="{ 'bg-white/30 border-white/40 shadow-inner': win.zIndex === topZIndex }"
             @click="toggleWindow(id)"
           >
-            <span class="mr-2">{{ win7Icons[id as keyof typeof win7Icons] }}</span>
-            <span class="text-white text-xs truncate capitalize">{{ id }}</span>
+            <span class="mr-2 font-bold">{{ win7Icons[id as keyof typeof win7Icons] }}</span>
+            <span class="text-white text-xs truncate capitalize font-bold">{{ id }}</span>
           </div>
         </div>
       </template>
