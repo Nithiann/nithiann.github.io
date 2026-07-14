@@ -24,13 +24,19 @@ export const portfolioData = {
   personal: {
     name: 'Bas Voss',
     location: 'Breda, The Netherlands',
-    role: 'Web / App Developer',
+    role: 'Software Developer | Back-end Specialist',
     contact: 'voss.bas@gmail.com',
     summary:
-      'I am a passionate developer with a strong background in software engineering. Interested in many different technologies and always eager to learn new things. I am a team player and enjoy working in a team. I have a strong work ethic and am always willing to put in the extra effort to get the job done. Security is a top priority for me and I always try to implement the best security practices.',
+      'I am a driven software developer specializing in back-end development, with a solid foundation in front-end development. I have a strong interest in software architecture and security, with maintainability, security and extensibility as key principles in my work. I enjoy solving complex technical challenges, contributing to technical decisions and continuously expanding my knowledge. I also value teamwork, helping colleagues and maintaining a friendly and enjoyable working environment.',
     education: [
-      { degree: 'Secondary Education in Application Development', period: '2019 - 2019' },
-      { degree: 'Bachelor in Software Engineering', period: '2019 - 2026' },
+      {
+        degree: 'Secondary Vocational Education in Application Development',
+        period: '2016 - 2019',
+      },
+      {
+        degree: 'Bachelor of Science in Software Engineering',
+        period: '2019 - 2026',
+      },
     ],
   },
   projects: [
@@ -42,32 +48,32 @@ export const portfolioData = {
       tech: 'Vue 3, Vite & Tailwind CSS',
     },
     {
+      title: 'Flira',
+      description: '.NET C# & Angular Task Management Tool',
+      icon: 'https://img.icons8.com/color/96/task.png',
+      url: '#',
+      tech: '.NET C# & Angular',
+    },
+    {
+      title: 'Bangers',
+      description: 'Social Media Event Finder platform for iOS and Android',
+      icon: 'https://img.icons8.com/?size=100&id=8T4evnENLKLw&format=png&color=000000',
+      url: 'https://github.com/orgs/Bangers-Company/repositories',
+      tech: 'React Native, Laravel & React',
+    },
+    {
       title: 'VOSScloud',
-      description: 'Symfony PHP Cloud Drive',
+      description: 'Self-hosted cloud storage in Laravel PHP',
       icon: 'https://img.icons8.com/color/96/cloud-storage.png',
-      url: '#',
-      tech: 'Symfony PHP',
-    },
-    {
-      title: 'Not Another Alarm Clock',
-      description: 'Flutter Challenge Alarm',
-      icon: 'https://img.icons8.com/color/96/alarm-clock.png',
-      url: '#',
-      tech: 'Flutter',
-    },
-    {
-      title: 'VOSStab',
-      description: 'A new tab extension for Mozilla Firefox',
-      icon: 'https://img.icons8.com/color/96/puzzle.png',
-      url: 'https://github.com/Nithiann/VOSStab',
-      tech: 'Vue 3, Vite & Tailwind CSS',
+      url: 'https://github.com/vossje-nl/VOSScloud',
+      tech: 'Laravel PHP',
     },
   ],
   experience: [
     {
       role: 'Junior Full-stack developer',
       company: 'Direct-Effect',
-      period: 'January 2025 - September 2025',
+      period: '2025 - 2025',
       location: 'Drunen',
       description: [
         'Developed a Progressive web-app front-end in AngularJS and Angular 8.',
@@ -78,7 +84,7 @@ export const portfolioData = {
     {
       role: 'Full-stack developer intern',
       company: 'Direct-Effect',
-      period: 'September 2024 - January 2025',
+      period: '2024 - 2024',
       location: 'Drunen',
       description: [
         'Developed a Progressive web-app front-end in AngularJS and Angular 8.',
@@ -89,7 +95,7 @@ export const portfolioData = {
     {
       role: 'Powerservice employee / System administrator',
       company: 'Mediamarkt',
-      period: 'August 2020 - January 2025',
+      period: '2020 - 2025',
       location: 'Breda',
       description: [
         'Helping customers with their technical issues.',
@@ -100,14 +106,14 @@ export const portfolioData = {
     {
       role: 'Developer Intern',
       company: 'TriStar Industries Group',
-      period: 'January 2019 - June 2019',
+      period: '2019 - 2019',
       location: 'Roosendaal',
       description: ['Developed In-house ERP tool in a custom PHP framework'],
     },
     {
       role: 'Developer intern',
       company: 'Coders academy',
-      period: 'August 2017 - January 2018',
+      period: '2017 - 2018',
       location: 'Rotterdam',
       description: ['Developed Social media platform for companies in Laravel PHP'],
     },
@@ -117,6 +123,7 @@ export const portfolioData = {
       { name: 'Angular', icon: 'angularjs', level: '95%' },
       { name: 'PHP', icon: 'php', level: '90%' },
       { name: 'Express.js', icon: 'express-js', level: '85%' },
+      { name: 'C# .NET', icon: 'c-sharp-logo', level: '85%' },
     ],
     working: [
       { name: 'Vue', icon: 'vue-js', level: '65%' },
@@ -126,10 +133,9 @@ export const portfolioData = {
       { name: 'Java', icon: 'java-coffee-cup-logo', level: '60%' },
     ],
     learning: [
-      { name: 'C# .NET', icon: 'c-sharp-logo', level: '70%' },
       { name: 'C# Game Dev', icon: 'unity', level: '45%' },
       { name: 'Rust', icon: 'rust-programming-language', level: '25%' },
-      { name: 'GO', icon: 'golang', level: '20%' },
+      { name: 'GO', icon: 'golang', level: '40%' },
     ],
   },
 }
