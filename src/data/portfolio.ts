@@ -44,14 +44,14 @@ export const portfolioData = {
       title: 'Vue Portfolio',
       description: 'Vue 3, Vite & Tailwind',
       icon: 'https://img.icons8.com/color/96/portfolio.png',
-      url: 'https://github.com/Nithiann/portfolio',
+      url: 'https://github.com/Nithiann/nithiann.github.io',
       tech: 'Vue 3, Vite & Tailwind CSS',
     },
     {
       title: 'Flira',
       description: '.NET C# & Angular Task Management Tool',
       icon: 'https://img.icons8.com/color/96/task.png',
-      url: '#',
+      url: 'https://github.com/Nithiann/Flira',
       tech: '.NET C# & Angular',
     },
     {
@@ -66,10 +66,21 @@ export const portfolioData = {
       description: 'Self-hosted cloud storage in Laravel PHP',
       icon: 'https://img.icons8.com/color/96/cloud-storage.png',
       url: 'https://github.com/vossje-nl/VOSScloud',
-      tech: 'Laravel PHP',
+      tech: 'Symfony',
     },
   ],
   experience: [
+    {
+      role: 'Back-end developer intern',
+      company: 'Indicia',
+      period: '2026 - 2026',
+      location: 'Tilburg',
+      description: [
+        'Developed an Applicant Tracking System back-end in Drupal.',
+        'Implemented API integrations for various HR tools.',
+        'Used MySQL as database engine.',
+      ],
+    },
     {
       role: 'Junior Full-stack developer',
       company: 'Direct-Effect',
